@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_Models
+namespace ALIS_DataAccess
 {
     public partial class Person
     {
@@ -18,62 +19,48 @@ namespace ALIS_Models
 
         [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Имя должно быть заполнено")]
-        [DisplayName("Имя")]
+        [Required]
+        [Column(TypeName = "character varying")]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Фамилия должна быть заполнена")]
-        [DisplayName("Фамилия")]
+        [Required]
+        [Column(TypeName = "character varying")]
         public string Surname { get; set; }
-
-        [DisplayName("Отчество")]
+        [Column(TypeName = "character varying")]
         public string Patronymic { get; set; }
-
-        [DisplayName("Дата создания")]
+        [Column(TypeName = "timestamp with time zone")]
         public DateTime CreateDate { get; set; }
-
-        [DisplayName("День рождения")]
+        [Column(TypeName = "date")]
         public DateTime? Birthday { get; set; }
-
-        [DisplayName("Телефон")]
+        [Column(TypeName = "character varying")]
         public string PhoneNumber { get; set; }
-
-        [DisplayName("Телефон дополнительный")]
+        [Column(TypeName = "character varying")]
         public string AltPhoneNumber { get; set; }
-
-        [DisplayName("Почта")]
+        [Column(TypeName = "character varying")]
         public string Email { get; set; }
-
-        [DisplayName("Штрих-код")]
+        [Required]
+        [Column(TypeName = "character varying")]
         public string Barcode { get; set; }
-
-        [DisplayName("Домашний адрес")]
+        [Column(TypeName = "character varying")]
         public string HomeAddres { get; set; }
-
-        [DisplayName("Группа")]
+        [Column(TypeName = "character varying")]
         public string GroupNumber { get; set; }
-
-        [DisplayName("Серия паспорта")]
+        [Column(TypeName = "character varying")]
         public string PasportSerial { get; set; }
-
-        [DisplayName("Номер паспорта")]
+        [Column(TypeName = "character varying")]
         public string PasportNumber { get; set; }
-
-        [DisplayName("Кем выдан")]
+        [Column(TypeName = "character varying")]
         public string PasportIssuedBy { get; set; }
-
-        [DisplayName("Дата выдачи")]
+        [Column(TypeName = "date")]
         public DateTime? PasportIssueDate { get; set; }
-
-        [DisplayName("В архиве")]
         public bool? IsArchive { get; set; }
-
-        [DisplayName("Пользователь")]
+        [Column("User_id", TypeName = "character varying")]
         public string UserId { get; set; }
 
+        [InverseProperty(nameof(BookCopy.CurrentHolder))]
         public virtual ICollection<BookCopy> BookCopies { get; set; }
+        [InverseProperty(nameof(BookCopiesCirculation.ForWhom))]
         public virtual ICollection<BookCopiesCirculation> BookCopiesCirculationForWhoms { get; set; }
+        [InverseProperty(nameof(BookCopiesCirculation.WhoDid))]
         public virtual ICollection<BookCopiesCirculation> BookCopiesCirculationWhoDids { get; set; }
     }
 }

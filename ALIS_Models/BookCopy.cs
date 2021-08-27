@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
-// экземпляры книг
-namespace ALIS_Models
+
+namespace ALIS_DataAccess
 {
+    [Table("Book_Copies")]
     public partial class BookCopy
     {
         public BookCopy()
@@ -16,31 +18,25 @@ namespace ALIS_Models
 
         [Key]
         public int Id { get; set; }
-
         [Required]
-        [DisplayName("Штрих-код")]
+        [Column(TypeName = "character varying")]
         public string Barcode { get; set; }
-
-        [Required(ErrorMessage = "Инвентарный номер должен быть заполнен")]
-        [DisplayName("Наименование операции")]
+        [Column(TypeName = "character varying")]
         public string InventoryNumber { get; set; }
-
-        [DisplayName("Невыдаваемый экземпляр")]
         public bool? IsObligatoryCopy { get; set; }
-
-        [Required(ErrorMessage = "Текущий держатель экземпляра не должен быть пустым")]
-        [DisplayName("Текущий держатель экземпляра")]
+        [Column("CurrentHolder_id")]
         public int CurrentHolderId { get; set; }
-
-        [Required(ErrorMessage = "Книга должна быть заполнена")]
-        [DisplayName("Книга")]
+        [Column("Book_id")]
         public int BookId { get; set; }
-
-        [DisplayName("В архиве")]
         public bool? IsArchive { get; set; }
 
+        [ForeignKey(nameof(BookId))]
+        [InverseProperty("BookCopies")]
         public virtual Book Book { get; set; }
+        [ForeignKey(nameof(CurrentHolderId))]
+        [InverseProperty(nameof(Person.BookCopies))]
         public virtual Person CurrentHolder { get; set; }
+        [InverseProperty(nameof(BookCopiesCirculation.BookCopy))]
         public virtual ICollection<BookCopiesCirculation> BookCopiesCirculations { get; set; }
     }
 }

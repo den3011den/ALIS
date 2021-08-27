@@ -1,40 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_Models
+namespace ALIS_DataAccess
 {
+    [Table("Book_Copies_Circulation")]
     public partial class BookCopiesCirculation
     {
         [Key]
+        [Column("id")]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Тип операции с экземпляром должен быть заполнен")]
-        [DisplayName("Тип операции с экземпляром")]
+        [Column("BookCopiesOperationType_id")]
         public int BookCopiesOperationTypeId { get; set; }
-
-        [Required(ErrorMessage = "Дата операции не может быть путой")]
-        [DisplayName("Дата операции")]
+        [Column(TypeName = "timestamp with time zone")]
         public DateTime? OperationDate { get; set; }
-
-        [Required(ErrorMessage = "Исполнитель операции должен быть заполнен")]
-        [DisplayName("Исполнитель операции")]
+        [Column("WhoDid_id")]
         public int WhoDidId { get; set; }
-
-        [Required(ErrorMessage = "Клиент должен быть заполнен")]
-        [DisplayName("Клиент")]
+        [Column("ForWhom_id")]
         public int ForWhomId { get; set; }
-
-        [Required(ErrorMessage = "Экземпляр не может быть пустым")]
-        [DisplayName("Экземпляр книги")]
+        [Column("BookCopy_id")]
         public int? BookCopyId { get; set; }
 
+        [ForeignKey(nameof(BookCopiesOperationTypeId))]
+        [InverseProperty("BookCopiesCirculations")]
         public virtual BookCopiesOperationType BookCopiesOperationType { get; set; }
+        [ForeignKey(nameof(BookCopyId))]
+        [InverseProperty("BookCopiesCirculations")]
         public virtual BookCopy BookCopy { get; set; }
+        [ForeignKey(nameof(ForWhomId))]
+        [InverseProperty(nameof(Person.BookCopiesCirculationForWhoms))]
         public virtual Person ForWhom { get; set; }
+        [ForeignKey(nameof(WhoDidId))]
+        [InverseProperty(nameof(Person.BookCopiesCirculationWhoDids))]
         public virtual Person WhoDid { get; set; }
     }
 }

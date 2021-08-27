@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_Models
+namespace ALIS_DataAccess
 {
+    [Table("Books_To_Tags")]
     public partial class BooksToTag
     {
-
-        [Required]
-        [DisplayName("Книга")]
+        [Key]
+        [Column("Book_id")]
         public int BookId { get; set; }
-
-        [Required]
-        [DisplayName("Тэг")]
-
+        [Key]
+        [Column("Tag_id")]
         public int TagId { get; set; }
 
+        [ForeignKey(nameof(BookId))]
+        [InverseProperty("BooksToTags")]
         public virtual Book Book { get; set; }
+        [ForeignKey(nameof(TagId))]
+        [InverseProperty("BooksToTags")]
         public virtual Tag Tag { get; set; }
     }
 }

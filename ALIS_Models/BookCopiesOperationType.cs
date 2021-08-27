@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_Models
+namespace ALIS_DataAccess
 {
+    [Table("Book_Copies_Operation_Types")]
     public partial class BookCopiesOperationType
     {
         public BookCopiesOperationType()
@@ -15,18 +17,15 @@ namespace ALIS_Models
         }
 
         [Key]
+        [Column("id")]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Наименование операции должно быть заполнено")]
-        [DisplayName("Наименование операции")]
+        [Required]
+        [Column(TypeName = "character varying")]
         public string Name { get; set; }
-
-        [DisplayName("Признак выдачи экземпляра")]
         public bool? IsOutOperation { get; set; }
-
-        [DisplayName("В архиве")]
         public bool? IsArchive { get; set; }
 
+        [InverseProperty(nameof(BookCopiesCirculation.BookCopiesOperationType))]
         public virtual ICollection<BookCopiesCirculation> BookCopiesCirculations { get; set; }
     }
 }

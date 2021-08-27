@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_Models
+namespace ALIS_DataAccess
 {
     public partial class Grif
     {
@@ -16,14 +17,12 @@ namespace ALIS_Models
 
         [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Наименование должно быть заполнено")]
-        [DisplayName("Наименование грифа")]
+        [Required]
+        [Column(TypeName = "character varying")]
         public string Name { get; set; }
-
-        [DisplayName("В архиве")]
         public bool? IsArchive { get; set; }
 
+        [InverseProperty(nameof(Book.Grif))]
         public virtual ICollection<Book> Books { get; set; }
     }
 }

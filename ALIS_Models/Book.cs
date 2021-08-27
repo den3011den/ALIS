@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_Models
+namespace ALIS_DataAccess
 {
+    [Index(nameof(Name), Name = "IX_Books_name")]
     public partial class Book
     {
         public Book()
@@ -18,55 +20,47 @@ namespace ALIS_Models
 
         [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Наименование должно быть заполнено")]
-        [DisplayName("Наименование")]
+        [Required]
+        [Column(TypeName = "character varying")]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Необходимо выбрать жанр")]
-        [DisplayName("Жанр")]
+        [Column("Genre_id")]
         public int GenreId { get; set; }
-
-        [Required(ErrorMessage = "Необходимо заполнить год публикации")]
-        [DisplayName("Год публикации")]
         public short PublicationYear { get; set; }
-
-        [Required(ErrorMessage = "Необходимо заполнить ISBN")]
-        [DisplayName("ISBN")]
+        [Required]
+        [Column("ISBN", TypeName = "character varying")]
         public string Isbn { get; set; }
-
-        [Required(ErrorMessage = "Необходимо заполнить количество страниц")]
-        [DisplayName("Количество страниц")]
         public int NumberOfPages { get; set; }
-
-        [Required(ErrorMessage = "Необходимо заполнить ББК")]
-        [DisplayName("ББК")]
+        [Required]
+        [Column("BBK", TypeName = "character varying")]
         public string Bbk { get; set; }
+        [Column("Grif_id")]
         public int? GrifId { get; set; }
+        [Column(TypeName = "character varying")]
         public string CopyrightMark { get; set; }
-
-        [Required(ErrorMessage = "Издатель должен быть заполнен")]
-        [DisplayName("Издатель")]
+        [Column("Publisher_id")]
         public int PublisherId { get; set; }
-
-        [Required(ErrorMessage = "Описание должно быть заполнен")]
-        [DisplayName("Описание")]
+        [Required]
+        [Column(TypeName = "character varying")]
         public string Description { get; set; }
-
-        [DisplayName("Количество экземпляров")]
         public int? NumberOfCopies { get; set; }
-
-        [DisplayName("Доступно экземпляров")]
         public int? NumberOfAvailableCopies { get; set; }
-
-        [DisplayName("В архиве")]
+        [Column("isArchive")]
         public bool? IsArchive { get; set; }
 
+        [ForeignKey(nameof(GenreId))]
+        [InverseProperty("Books")]
         public virtual Genre Genre { get; set; }
+        [ForeignKey(nameof(GrifId))]
+        [InverseProperty("Books")]
         public virtual Grif Grif { get; set; }
+        [ForeignKey(nameof(PublisherId))]
+        [InverseProperty("Books")]
         public virtual Publisher Publisher { get; set; }
+        [InverseProperty(nameof(BookCopy.Book))]
         public virtual ICollection<BookCopy> BookCopies { get; set; }
+        [InverseProperty(nameof(BooksToAuthor.Book))]
         public virtual ICollection<BooksToAuthor> BooksToAuthors { get; set; }
+        [InverseProperty(nameof(BooksToTag.Book))]
         public virtual ICollection<BooksToTag> BooksToTags { get; set; }
     }
 }
