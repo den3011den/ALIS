@@ -1,6 +1,6 @@
 using System;
 
-namespace ALIS.Models
+namespace ALIS_Models
 {
     public class ErrorViewModel
     {

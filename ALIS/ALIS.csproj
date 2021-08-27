@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -7,6 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ALIS_DataAccess\ALIS_DataAccess.csproj" />
+    <ProjectReference Include="..\ALIS_Models\ALIS_Models.csproj" />
+    <ProjectReference Include="..\ALIS_Utility\ALIS_Utility.csproj" />
   </ItemGroup>
 
 </Project>

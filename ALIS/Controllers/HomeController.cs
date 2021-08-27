@@ -1,4 +1,4 @@
-﻿using ALIS.Models;
+﻿using ALIS_Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ALIS.Controllers
+namespace ALIS_Controllers
 {
     public class HomeController : Controller
     {
