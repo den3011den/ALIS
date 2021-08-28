@@ -21,6 +21,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ALIS_Models\ALIS_Models.csproj" />
+    <ProjectReference Include="..\ALIS_Utility\ALIS_Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Initializer\" />
+    <Folder Include="Repository\IRepository\" />
   </ItemGroup>
 
 </Project>

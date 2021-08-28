@@ -1,4 +1,6 @@
 using ALIS_DataAccess.Data;
+using ALIS_DataAccess.Initializer;
+using ALIS_DataAccess.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,16 +36,21 @@ namespace ALIS
             /*services.AddDefaultIdentity<IdentityUser>()                 
                  .AddEntityFrameworkStores<ApplicationDbContext>();*/
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                 .AddDefaultTokenProviders()
+                 .AddDefaultUI()
                  .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDistributedMemoryCache();
+
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
 
             services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -62,6 +69,7 @@ namespace ALIS
 
             app.UseAuthentication();
             app.UseAuthorization();
+            dbInitializer.Initialize();
 
             app.UseEndpoints(endpoints =>
             {

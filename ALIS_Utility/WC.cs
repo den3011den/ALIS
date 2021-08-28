@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ALIS_Utility
 {
-    public static class WebConstants
+    public static class WC
     {
-        public const string NewConst = @"NewConst";
+        public const string AdminRole = @"Admin";
+        public const string ClientRole = @"Client";
     }
 }

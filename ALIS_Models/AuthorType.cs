@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ALIS_DataAccess
 {
     [Table("Author_Types")]
-    [Index(nameof(Name), Name = "IX_Author_Types_name")]
+    [Microsoft.EntityFrameworkCore.Index(nameof(Name), Name = "IX_Author_Types_name")]
     public partial class AuthorType
     {
         public AuthorType()

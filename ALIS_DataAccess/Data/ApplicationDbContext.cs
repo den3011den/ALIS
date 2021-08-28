@@ -30,6 +30,7 @@ namespace ALIS_DataAccess.Data
         public DbSet<Person> Persons { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

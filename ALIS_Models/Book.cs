@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ALIS_DataAccess
 {
-    [Index(nameof(Name), Name = "IX_Books_name")]
+    [Microsoft.EntityFrameworkCore.Index(nameof(Name), Name = "IX_Books_name")]
     public partial class Book
     {
         public Book()

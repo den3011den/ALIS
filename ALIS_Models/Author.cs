@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ALIS_DataAccess
 {
-    [Index(nameof(Name), Name = "IX_Authors_name")]
+    [Microsoft.EntityFrameworkCore.Index(nameof(Name), Name = "IX_Authors_name")]
     public partial class Author
     {
         public Author()
