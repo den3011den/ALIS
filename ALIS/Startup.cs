@@ -44,6 +44,25 @@ namespace ALIS
             services.AddDistributedMemoryCache();
 
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IAuthorTypeRepository, AuthorTypeRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookCopiesCirculationRepository, BookCopiesCirculationRepository>();
+            services.AddScoped<IBookCopiesOperationTypeRepository, BookCopiesOperationTypeRepository>();
+            services.AddScoped<IBookCopyRepository, BookCopyRepository>();
+            services.AddScoped<IBooksToAuthorRepository, BooksToAuthorRepository>();
+            services.AddScoped<IBooksToTagRepository, BooksToTagRepository>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IGrifRepository, GrifRepository>();
+            services.AddScoped<IPublisherRepository, PublisherRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+
+            
+
+
+
+
             services.AddScoped<IDbInitializer, DbInitializer>();
 
             services.AddControllersWithViews();
