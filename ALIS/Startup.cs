@@ -31,7 +31,10 @@ namespace ALIS
                 Configuration.GetConnectionString("DefaultConnection")
                 ));
 
-            services.AddDefaultIdentity<IdentityUser>()                 
+            /*services.AddDefaultIdentity<IdentityUser>()                 
+                 .AddEntityFrameworkStores<ApplicationDbContext>();*/
+
+            services.AddDefaultIdentity<IdentityUser>()
                  .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDistributedMemoryCache();
