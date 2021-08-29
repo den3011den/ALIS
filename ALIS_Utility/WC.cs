@@ -10,5 +10,8 @@ namespace ALIS_Utility
     {
         public const string AdminRole = @"Admin";
         public const string ClientRole = @"Client";
+
+        public const string Success = @"Success";
+        public const string Error = @"Error";
     }
 }

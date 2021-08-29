@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ALIS_Utility;
+using ALIS_Models;
 
 namespace ALIS.Areas.Identity.Pages.Account
 {
@@ -85,6 +87,7 @@ namespace ALIS.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Пользователь вошёл.");
+                    TempData[WC.Success] =  "Вы вошли в систему!";
                     return LocalRedirect(returnUrl);
                 }
                 //if (result.RequiresTwoFactor)
