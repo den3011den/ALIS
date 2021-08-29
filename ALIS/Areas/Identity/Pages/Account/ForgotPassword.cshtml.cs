@@ -30,7 +30,7 @@ namespace ALIS.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Ввод Email обязателен")]
             [EmailAddress]
             public string Email { get; set; }
         }
@@ -58,8 +58,8 @@ namespace ALIS.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "ALIS: Сброс пароля",
+                    $"Для того, чтобы сбросить свой пароль, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>кликните здесь</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

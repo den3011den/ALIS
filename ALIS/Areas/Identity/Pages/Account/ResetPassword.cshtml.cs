@@ -27,18 +27,19 @@ namespace ALIS.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Email обязателен для ввода")]
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Поле 'Новый пароль' обязательно для ввода")]
+            [StringLength(100, ErrorMessage = "{0} должен быть не менее {2} и не больше {1} символов.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+            [Display(Name = "Новый пароль")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Новый пароль ещё раз")]
+            [Compare("Password", ErrorMessage = "Поля 'Новый пароль' и 'Новый пароль ещё раз' не совпадают.")]
             public string ConfirmPassword { get; set; }
 
             public string Code { get; set; }

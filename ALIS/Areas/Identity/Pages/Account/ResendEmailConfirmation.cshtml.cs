@@ -49,7 +49,7 @@ namespace ALIS.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Письмо для подтверждения email оправлено. Проверьте Вашу почту.");
                 return Page();
             }
 
@@ -63,10 +63,10 @@ namespace ALIS.Areas.Identity.Pages.Account
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "ALIS: Подтвердите Ваш email",
+                $"Для подтверждения вашего аккаунта <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>кликните здесь</a>.");
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(string.Empty, "Письмо для подтверждения аккаунта отправлено. Пожалуйста проверьте Вашу почту.");
             return Page();
         }
     }

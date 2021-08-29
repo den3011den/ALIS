@@ -1,10 +1,12 @@
 using ALIS_DataAccess.Data;
 using ALIS_DataAccess.Initializer;
 using ALIS_DataAccess.Repository;
+using ALIS_Utility.SendGrid;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,16 +58,14 @@ namespace ALIS
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IGrifRepository, GrifRepository>();
             services.AddScoped<IPublisherRepository, PublisherRepository>();
-            services.AddScoped<ITagRepository, TagRepository>();
-
-            
-
-
-
-
+            services.AddScoped<ITagRepository, TagRepository>();           
             services.AddScoped<IDbInitializer, DbInitializer>();
 
             services.AddControllersWithViews();
+
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<EmailOptions>(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
