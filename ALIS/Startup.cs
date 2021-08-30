@@ -2,8 +2,10 @@ using ALIS_DataAccess.Data;
 using ALIS_DataAccess.Initializer;
 using ALIS_DataAccess.Repository;
 using ALIS_Utility.SendGrid;
+using ALIS_Utility.StringEncryptionUtility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -11,8 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,23 +24,65 @@ namespace ALIS
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+
+ 
+        public static void SetAppSettingValue(string key, string value, string appSettingsJsonFilePath = null)
+        {
+
+            var json = System.IO.File.ReadAllText(appSettingsJsonFilePath);
+            dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(json);
+
+            jsonObj[key] = value;
+
+            string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+
+            System.IO.File.WriteAllText(appSettingsJsonFilePath, output);
+        }
+
+
+        public void StartupEncrypt(IWebHostEnvironment env)
+        {
+            
+            if (Configuration.GetValue<string>("Encrypted") == "NO")
+            {
+                var appConnectionString = Configuration.GetValue<string>("DefaultConnection");
+                var appSendGridKey = Configuration.GetValue<string>("SendGridKey");
+                var appSendGridEmailFrom = Configuration.GetValue<string>("SendGridEmailFrom");
+
+                appConnectionString = StringEncryptionUtility.Encrypt(appConnectionString);                                
+                appSendGridKey = StringEncryptionUtility.Encrypt(appSendGridKey);
+                appSendGridEmailFrom = StringEncryptionUtility.Encrypt(appSendGridEmailFrom);
+
+                SetAppSettingValue("DefaultConnection", appConnectionString, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
+                SetAppSettingValue("SendGridKey", appSendGridKey, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
+                SetAppSettingValue("SendGridEmailFrom", appSendGridEmailFrom, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
+                SetAppSettingValue("Encrypted", "YES", System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
+
+            }
+
+
+        }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
+
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment _env { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(
-                Configuration.GetConnectionString("DefaultConnection")
-                ));
+             
+            StartupEncrypt(_env);
 
-            /*services.AddDefaultIdentity<IdentityUser>()                 
-                 .AddEntityFrameworkStores<ApplicationDbContext>();*/
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(                 
+                StringEncryptionUtility.Decrypt(Configuration.GetValue<string>("DefaultConnection"))
+                ));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                  .AddDefaultTokenProviders()
