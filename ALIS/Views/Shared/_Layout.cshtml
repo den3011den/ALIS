@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using ALIS_Utility
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,22 +18,57 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ALIS</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <partial name="_LoginPartial" />
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (SignInManager.IsSignedIn(User)) {                         
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white-50" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i></a>
+                        </li>                        
+                        @if (User.IsInRole(WC.AdminRole))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-tools"></i> Администрирование
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Person" asp-action="Index"><i class="fas fa-users"></i> Сотрудники / студенты / пользователи</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-list"></i> Справочники
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Author" asp-action="Index"><i class="fas fa-user-edit"></i> Авторы</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Tag" asp-action="Index"><i class="fas fa-pen-alt"></i> Типы авторства</a>
+                                    <a><hr class="dropdown-divider"></a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Grif" asp-action="Index"><i class="fas fa-stamp"></i> Грифы</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Genre" asp-action="Index"><i class="fas fa-theater-masks"></i> Жанры</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Publisher" asp-action="Index"><i class="fas fa-building"></i> Издатели</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Tag" asp-action="Index"><i class="fas fa-tags"></i> Тэги</a>
+                                </div>
+                            </li>
+
+                        }
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-book-open"></i> Библиотека
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="Author" asp-action="Index"><i class="fas fa-book"></i> Книги</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tag" asp-action="Index"><i class="fas fa-th-list"></i> Экземпляры</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        }
+                        <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </div>
@@ -39,8 +81,8 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top footer bg-dark">
+        <div class="container text-white-50">
             &copy; ALIS - <a href="http://spospk.ru/">СПК</a>
         </div>
     </footer>

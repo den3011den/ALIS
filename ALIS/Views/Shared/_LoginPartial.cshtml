@@ -9,13 +9,13 @@
 
         var user = (ApplicationUser)await UserManager.GetUserAsync(User);
 
-        <li class="nav-item">
+        <li class="nav-item border-left">
             @*<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)!</a>*@
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="far fa-user"></i> @user.FullName</a>
+            <a id="manage" class="nav-link text-white-50" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="far fa-user"></i> @user.FullName</a>
         </li>
         <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home" , new { area="" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                <button id="logout" type="submit" class="nav-link btn btn-link text-white-50"><i class="fas fa-sign-out-alt"></i> Выйти</button>
             </form>
         </li>
     }
@@ -24,8 +24,8 @@
         @*<li class="nav-item">
                 <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
             </li>*@
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <li class="nav-item border-left">
+            <a class="nav-link text-white-50" id="login" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Вход</a>
         </li>
     }
 </ul>
