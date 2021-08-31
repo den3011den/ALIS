@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/fontawersome/css/all.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -26,47 +28,49 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (SignInManager.IsSignedIn(User)) {                         
-                        <li class="nav-item">
-                            <a class="nav-link text-white-50" asp-area="" asp-controller="Book" asp-action="Index"><i class="fas fa-home"></i></a>
-                        </li>                        
-                        @if (User.IsInRole(WC.AdminRole))
+                        @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-tools"></i> Администрирование
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Person" asp-action="Index"><i class="fas fa-users"></i> Сотрудники / студенты / пользователи</a>
-                                </div>
+                            <li class="nav-item">
+                                <a class="nav-link text-white-50" asp-area="" asp-controller="Book" asp-action="Index"><i class="fas fa-home"> Домой</i></a>
                             </li>
 
+                            @if (User.IsInRole(WC.AdminRole))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-tools"></i> Администрирование
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Person" asp-action="Index"><i class="fas fa-users"></i> Сотрудники / студенты / пользователи</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-list"></i> Справочники
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Author" asp-action="Index"><i class="fas fa-user-edit"></i> Авторы</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AuthorType" asp-action="Index"><i class="fas fa-pen-alt"></i> Типы авторства</a>
+                                        <a><hr class="dropdown-divider"></a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Grif" asp-action="Index"><i class="fas fa-stamp"></i> Грифы</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Genre" asp-action="Index"><i class="fas fa-theater-masks"></i> Жанры</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Publisher" asp-action="Index"><i class="fas fa-building"></i> Издатели</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Tag" asp-action="Index"><i class="fas fa-tags"></i> Тэги</a>
+                                    </div>
+                                </li>
+
+                            }
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-list"></i> Справочники
+                                    <i class="fas fa-book-open"></i> Библиотека
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Author" asp-action="Index"><i class="fas fa-user-edit"></i> Авторы</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="AuthorType" asp-action="Index"><i class="fas fa-pen-alt"></i> Типы авторства</a>
-                                    <a><hr class="dropdown-divider"></a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Grif" asp-action="Index"><i class="fas fa-stamp"></i> Грифы</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Genre" asp-action="Index"><i class="fas fa-theater-masks"></i> Жанры</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Publisher" asp-action="Index"><i class="fas fa-building"></i> Издатели</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Tag" asp-action="Index"><i class="fas fa-tags"></i> Тэги</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="Index"><i class="fas fa-book"></i> Книги</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="BookCopy" asp-action="Index"><i class="fas fa-th-list"></i> Экземпляры</a>
                                 </div>
                             </li>
-
-                        }
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-book-open"></i> Библиотека
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="Index"><i class="fas fa-book"></i> Книги</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="BookCopy" asp-action="Index"><i class="fas fa-th-list"></i> Экземпляры</a>
-                            </div>
-                        </li>
                         }
                         <partial name="_LoginPartial" />
                     </ul>
@@ -87,8 +91,11 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
