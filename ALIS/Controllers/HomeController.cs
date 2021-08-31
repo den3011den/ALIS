@@ -23,7 +23,9 @@ namespace ALIS_Controllers
 
         public IActionResult Index()
         {
-            return View();
+
+            return RedirectToAction("Index", "Book");
+            //return View();
         }
 
         public IActionResult Privacy()

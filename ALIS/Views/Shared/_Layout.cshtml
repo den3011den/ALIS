@@ -28,7 +28,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (SignInManager.IsSignedIn(User)) {                         
                         <li class="nav-item">
-                            <a class="nav-link text-white-50" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i></a>
+                            <a class="nav-link text-white-50" asp-area="" asp-controller="Book" asp-action="Index"><i class="fas fa-home"></i></a>
                         </li>                        
                         @if (User.IsInRole(WC.AdminRole))
                         {
@@ -47,7 +47,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" asp-area="" asp-controller="Author" asp-action="Index"><i class="fas fa-user-edit"></i> Авторы</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Tag" asp-action="Index"><i class="fas fa-pen-alt"></i> Типы авторства</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="AuthorType" asp-action="Index"><i class="fas fa-pen-alt"></i> Типы авторства</a>
                                     <a><hr class="dropdown-divider"></a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Grif" asp-action="Index"><i class="fas fa-stamp"></i> Грифы</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Genre" asp-action="Index"><i class="fas fa-theater-masks"></i> Жанры</a>
@@ -63,8 +63,8 @@
                                 <i class="fas fa-book-open"></i> Библиотека
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-area="" asp-controller="Author" asp-action="Index"><i class="fas fa-book"></i> Книги</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Tag" asp-action="Index"><i class="fas fa-th-list"></i> Экземпляры</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="Index"><i class="fas fa-book"></i> Книги</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="BookCopy" asp-action="Index"><i class="fas fa-th-list"></i> Экземпляры</a>
                             </div>
                         </li>
                         }
