@@ -11,18 +11,18 @@ $(document).ready(function () {
 function loadDataTable(url) {
     dataTable = $("#tblData").DataTable({
 
-        "initComplete": 
-            function() {
-            this.api().column(4).every(function () {
-                var column = this;                
-                column.search('false').draw();
-                var select = $('#show_archive_records')             
-                    .on('change', function () {
-                        if (this.checked)                            
-                            column.search('^(true|false)', true, false).draw();
-                        else
-                            column.search(false).draw();
-                    });          
+        "initComplete":
+            function () {
+                this.api().column(4).every(function () {
+                    var column = this;
+                    column.search('false').draw();
+                    var select = $('#show_archive_records')
+                        .on('change', function () {
+                            if (this.checked)
+                                column.search('^(true|false)', true, false).draw();
+                            else
+                                column.search(false).draw();
+                        });
                 });
             },
 
@@ -69,14 +69,14 @@ function loadDataTable(url) {
                             <div class="w-75 btn-group" role="group">
                                 <a href="/AuthorType/Edit/${row.id}" class="btn btn-success text-white" style="cursor:pointer" title="Редактировать запись">
                                    <i class="fas fa-edit mx-2"></i>
-                                 <a href="/AuthorType/Delete/${row.id}" class="btn btn-danger text-white" style="cursor:pointer" title="Удалить запись">
+                                 <a href="/AuthorType/Delete/${row.id}" class="btn btn-danger text-white" style="cursor:pointer" title="Удалить запись")">
                                      <i class="fas fa-trash-alt mx-2"></i>
                                  </a>
                              </div>
                         </div>
                     `;
 
- 
+
                 },
                 "width": "3%"
             },
