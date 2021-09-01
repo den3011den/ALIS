@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_DataAccess
+namespace ALIS_Models
 {
     public partial class Grif
     {

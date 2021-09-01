@@ -1,4 +1,5 @@
 ﻿using ALIS_DataAccess.Repository;
+using ALIS_Models;
 using ALIS_Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,29 @@ namespace ALIS.Controllers
         {
             return View();
         }
+
+        // GET - Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //POST - CREATE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(AuthorType obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _authorTypeRepo.Add(obj);
+                _authorTypeRepo.Save();
+                TempData[WC.Success] = "Тип авторства '" + obj.Name + "' успешно создан";
+                return RedirectToAction("Index");
+            }
+            TempData[WC.Error] = "Не удалось создать тип авторства '" + obj.Name + "'";
+            return View(obj);
+        }
+
 
         #region API CALLS
         [HttpGet]

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_DataAccess
+namespace ALIS_Models
 {
     [Microsoft.EntityFrameworkCore.Index(nameof(Name), Name = "IX_Books_name")]
     public partial class Book

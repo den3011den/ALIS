@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace ALIS_Models
+namespace ALIS_Models.ViewModel
 {
     public class ErrorViewModel
     {

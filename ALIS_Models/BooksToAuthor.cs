@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace ALIS_DataAccess
+namespace ALIS_Models
 {
     [Table("Books_To_Authors")]
     public partial class BooksToAuthor

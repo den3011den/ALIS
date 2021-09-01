@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 #nullable disable
 
-namespace ALIS_DataAccess
+namespace ALIS_Models
 {
     [Microsoft.EntityFrameworkCore.Index(nameof(Name), Name = "IX_Authors_name")]
     public partial class Author
