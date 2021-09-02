@@ -20,7 +20,7 @@ namespace ALIS_Models
 
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Ввод наименования обязателен")]
         [Column(TypeName = "character varying")]
         [DisplayName("Наименование")]
         public string Name { get; set; }

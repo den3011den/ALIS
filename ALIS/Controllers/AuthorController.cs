@@ -52,6 +52,11 @@ namespace ALIS.Controllers
                 return RedirectToAction("Index");
             }
             TempData[WC.Error] = "Не удалось создать автора '" + obj.Name + "'";
+
+            // TODO: После добавления записи восстанавливать строку поиска в списке Index
+            // TODO: После добавления записи восстанавливать checkbox "Показывать архивные записи"
+            // TODO: После добавления записи устанавливать выбор в списке Index на созданую запись
+
             return View(obj);
         }
 
@@ -87,6 +92,11 @@ namespace ALIS.Controllers
                 TempData[WC.Success] = "Автор '" + obj.Name + "' успешно обновлен";
                 return RedirectToAction("Index");
             }
+
+            // TODO: После редактирования записи восстанавливать строку поиска в списке Index
+            // TODO: После редактирования записи восстанавливать checkbox "Показывать архивные записи"
+            // TODO: После редактирования записи устанавливать выбор в списке Index на отредактированную запись
+
             return View(obj);
         }
 
@@ -123,6 +133,12 @@ namespace ALIS.Controllers
                 TempData[WC.Success] = "Автор '" + obj.Name + "' успешно удалён в архив";
                 return RedirectToAction("Index");
             }
+
+            // TODO: После удаления записи восстанавливать строку поиска в списке Index
+            // TODO: После удаления записи восстанавливать checkbox "Показывать архивные записи"
+            // TODO: После удаления записи, если checkbox "Показывать архивные записи" включен, устанавливать выбор в списке Index на удалённую в архив запись
+
+
             return View(obj);
 
 
@@ -162,8 +178,13 @@ namespace ALIS.Controllers
                 TempData[WC.Success] = "Автор '" + obj.Name + "' успешно восстановлен из архива";
                 return RedirectToAction("Index");
             }
-            return View(obj);
 
+            // TODO: После восстановления из архива записи восстанавливать строку поиска в списке Index
+            // TODO: После восстановления из архива записи восстанавливать checkbox "Показывать архивные записи"
+            // TODO: После восстановления из архива записи устанавливать выбор в списке Index на удалённую в архив запись
+
+
+            return View(obj);
 
         }
 

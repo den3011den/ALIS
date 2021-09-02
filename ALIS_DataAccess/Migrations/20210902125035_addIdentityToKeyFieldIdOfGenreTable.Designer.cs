@@ -3,15 +3,17 @@ using System;
 using ALIS_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ALIS_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210902125035_addIdentityToKeyFieldIdOfGenreTable")]
+    partial class addIdentityToKeyFieldIdOfGenreTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -342,10 +344,8 @@ namespace ALIS_DataAccess.Migrations
             modelBuilder.Entity("ALIS_Models.Genre", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasComment("Идентификатор жанра")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasComment("Идентификатор жанра");
 
                     b.Property<bool?>("IsArchive")
                         .HasColumnType("boolean")

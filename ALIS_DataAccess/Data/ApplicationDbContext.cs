@@ -279,9 +279,9 @@ namespace ALIS_DataAccess.Data
             {
                 entity.HasComment("Справочник жанров");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasComment("Идентификатор жанра");
+                entity.Property(e => e.Id)                    
+                    .HasComment("Идентификатор жанра")
+                    .UseIdentityAlwaysColumn(); ;
 
                 entity.Property(e => e.IsArchive).HasComment("Признак архива");
 
