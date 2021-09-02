@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace ALIS_Models
         public int Id { get; set; }
         [Required]
         [Column(TypeName = "character varying")]
+        [DisplayName("Наименование")]
         public string Name { get; set; }
         public bool? IsArchive { get; set; }
 

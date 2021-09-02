@@ -7,14 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ALIS_Utility.StringEncryptionUtility;
 
 namespace ALIS_DataAccess.Data
 {
     public partial class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
 
+        public IConfiguration Configuration { get; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration) : base(options)
+        {
+            Configuration = configuration;
         }
 
         public DbSet<Author> Authors { get; set; }
@@ -37,8 +40,8 @@ namespace ALIS_DataAccess.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Alis_v2;Username=ALIS_v2_User;Password=Qwerty123");
+
+                optionsBuilder.UseNpgsql(StringEncryptionUtility.Decrypt(Configuration.GetValue<string>("DefaultConnection")));
              
             }
         }
