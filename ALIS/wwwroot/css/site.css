@@ -72,13 +72,17 @@ body {
 
 /* Toastr */
 .toast-success {
-    background-color: #13d878 !important;
+   /* background-color: #b6ff00 !important; */
+    opacity: 1.0 !important;
+   /* color: #0094ff !important; */
 }
 
 .toast-warning {
     background-color: #357e45 !important;
+    opacity: 1.0 !important;
 }
 
 .toast-error {
-    background-color: #3533a7 !important;
+    background-color: #ff0000 !important;
+    opacity: 1.0 !important;
 }

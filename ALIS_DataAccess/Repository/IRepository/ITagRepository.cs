@@ -1,5 +1,6 @@
 ﻿using ALIS_DataAccess.Repository.IRepository;
 using ALIS_Models;
+using ALIS_Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace ALIS_DataAccess.Repository
 {
     public interface ITagRepository : IRepository<Tag>
     {
-         
+        void Update(Tag obj, UpdateMode UpdateMode);
     }
 }
