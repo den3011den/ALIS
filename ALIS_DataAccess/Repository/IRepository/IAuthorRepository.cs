@@ -10,6 +10,6 @@ namespace ALIS_DataAccess.Repository
 {
     public interface IAuthorRepository : IRepository<Author>
     {
-         
+  
     }
 }

@@ -39,6 +39,13 @@ namespace ALIS.Controllers
         {
             if (ModelState.IsValid)
             {
+                AuthorType isExistsThisName = _authorTypeRepo.FirstOrDefault(u => u.Name.ToLower() == obj.Name.ToLower());
+                if(isExistsThisName!=null)
+                { 
+                    TempData[WC.Error] = "Тип авторства с наименованием '" + obj.Name + "' уже существует";
+                    return View(obj);
+                }
+
                 _authorTypeRepo.Add(obj);
                 _authorTypeRepo.Save();
                 TempData[WC.Success] = "Тип авторства '" + obj.Name + "' успешно создан";
@@ -47,6 +54,120 @@ namespace ALIS.Controllers
             TempData[WC.Error] = "Не удалось создать тип авторства '" + obj.Name + "'";
             return View(obj);
         }
+
+
+        //EDIT - GET
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var obj = _authorTypeRepo.Find(id.GetValueOrDefault());
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(AuthorType obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _authorTypeRepo.Update(obj, UpdateMode.Update);
+                _authorTypeRepo.Save();
+
+                TempData[WC.Success] = "Тип авторства '" + obj.Name + "' успешно обновлен";
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
+
+
+        //GET - DELETE
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var obj = _authorTypeRepo.Find(id.GetValueOrDefault());
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(obj);
+        }
+
+        //POST - DELETE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(AuthorType obj)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _authorTypeRepo.Update(obj, UpdateMode.MoveToArchive);
+                _authorTypeRepo.Save();
+
+                TempData[WC.Success] = "Тип авторства '" + obj.Name + "' успешно удалён в архив";
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+             
+
+        }
+
+        //GET - RESTORE
+        public IActionResult Restore(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var obj = _authorTypeRepo.Find(id.GetValueOrDefault());
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(obj);
+        }
+
+
+        //POST - Restore
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Restore(AuthorType obj)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _authorTypeRepo.Update(obj, UpdateMode.RestoreFromArchive);
+                _authorTypeRepo.Save();
+
+                TempData[WC.Success] = "Тип авторства '" + obj.Name + "' успешно восстановлен из архива";
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+
+
+        }
+
 
 
         #region API CALLS

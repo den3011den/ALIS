@@ -43,7 +43,8 @@ function loadDataTable(url) {
                     if (data === true) {
                         return `<div style="text-align: center;"><span style="color:red"><i class="fas fa-archive"></i></span></div>`;
                     }
-                    return data;
+                    return ``;
+                    //return data;
                 },
                 "width": "1%"
             },
