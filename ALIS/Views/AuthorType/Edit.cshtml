@@ -14,9 +14,20 @@
                     <div class="col-4">
                         <label asp-for="Name">
                         </label>
-                    </div>
+                    </div>                     
                     <div class="col-8">
-                        <input asp-for="Name" class="form-control" />
+                        @if (Model.IsArchive.GetValueOrDefault())
+                        {
+                            <input asp-for="Name" readonly class="form-control" />
+                            <h6 class="text-warning pl-3">
+                                <i class="fas fa-exclamation-circle"></i> Для редактирования необходимо восстановить запись из архива.
+                            </h6>
+                        }
+
+                        else
+                        {
+                            <input asp-for="Name" class="form-control" />
+                        }
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
@@ -24,9 +35,18 @@
                 <div class="form-group row py-2">
                     <div class="col-8 offset-4 row">
 
-                        <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Обновить" />
-                        </div>
+                        @if (Model.IsArchive.GetValueOrDefault())
+                        {
+                            <div class="col">
+                                <input type="submit" class="btn btn-info w-100" disabled value="Обновить" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col">
+                                <input type="submit" class="btn btn-info w-100" value="Обновить" />
+                            </div>
+                        }
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100">
                                 <i class="fas fa-sign-out-alt"></i>Назад

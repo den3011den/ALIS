@@ -1,5 +1,6 @@
 ﻿using ALIS_DataAccess.Data;
 using ALIS_Models;
+using ALIS_Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,40 @@ namespace ALIS_DataAccess.Repository
         {
             _db = db;
         }
+
+        public void Update(Author obj, UpdateMode updateMode = UpdateMode.Update)
+        {
+            var objFromDb = base.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+
+                switch (updateMode)
+                {
+                    case UpdateMode.Update:
+                        {
+                            objFromDb.Name = obj.Name;
+                            break;
+                        }
+                    case UpdateMode.MoveToArchive:
+                        {
+                            objFromDb.IsArchive = true;
+                            break;
+                        }
+                    case UpdateMode.RestoreFromArchive:
+                        {
+                            objFromDb.IsArchive = false;
+                            break;
+                        }
+                    default:
+                        {
+                            objFromDb.Name = obj.Name;
+                            break;
+                        }
+                }
+
+            }
+        }
+
+
     }
 }

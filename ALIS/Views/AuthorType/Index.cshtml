@@ -31,7 +31,11 @@
     </div>
 
     @section Scripts{
-        <script src="~/js/authortype.js"></script>
+        <script type="text/javascript">
+            window.api_url = '/authortype/GetAuthorTypeList';
+            window.model_name = 'AuthorType';
+        </script>
+        <script src="~/js/catalog.js"></script>
     <script>
         //function askDeleteConfirm(event) {
         //    event.preventDefault();

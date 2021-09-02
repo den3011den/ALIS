@@ -1,6 +1,7 @@
 ﻿var dataTable;
 
-
+var api_url = window.api_url || null;
+var model_name = window.model_name || null;
 
 $(document).ready(function () {
     loadDataTable("");
@@ -32,7 +33,7 @@ function loadDataTable(url) {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
         },
         "ajax": {
-            "url": "/authortype/GetAuthorTypeList" + url
+            "url": api_url + url
         },
         "columns": [
             { "data": "id", "width": "3%" },
@@ -56,9 +57,9 @@ function loadDataTable(url) {
                         return `
                         <div style="text-align: center;">
                             <div class="w-75 btn-group" role="group">
-                                <a href="/AuthorType/Edit/${row.id}" class="btn btn-success text-white" style="cursor:pointer" title="Редактировать запись">
+                                <a href="/${model_name}/Edit/${row.id}" class="btn btn-success text-white" style="cursor:pointer" title="Редактировать запись">
                                    <i class="fas fa-edit mx-2"></i>
-                                 <a href="/AuthorType/Restore/${row.id}" class="btn btn-warning text-white" style="cursor:pointer" title="Восстановить запись">
+                                 <a href="/${model_name}/Restore/${row.id}" class="btn btn-warning text-white" style="cursor:pointer" title="Восстановить запись">
                                      <i class="fas fa-trash-restore-alt mx-2"></i>
                                  </a>
                              </div>
@@ -68,9 +69,9 @@ function loadDataTable(url) {
                     return `
                         <div style="text-align: center;">
                             <div class="w-75 btn-group" role="group">
-                                <a href="/AuthorType/Edit/${row.id}" class="btn btn-success text-white" style="cursor:pointer" title="Редактировать запись">
+                                <a href="/${model_name}/Edit/${row.id}" class="btn btn-success text-white" style="cursor:pointer" title="Редактировать запись">
                                    <i class="fas fa-edit mx-2"></i>
-                                 <a href="/AuthorType/Delete/${row.id}" class="btn btn-danger text-white" style="cursor:pointer" title="Удалить запись")">
+                                 <a href="/${model_name}/Delete/${row.id}" class="btn btn-danger text-white" style="cursor:pointer" title="Удалить запись")">
                                      <i class="fas fa-trash-alt mx-2"></i>
                                  </a>
                              </div>

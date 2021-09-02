@@ -17,6 +17,12 @@
                     </div>
                     <div class="col-8">
                         <input asp-for="Name" class="form-control" readonly />
+                        @if (!Model.IsArchive.GetValueOrDefault())
+                        {
+                            <h6 class="text-warning pl-3">
+                                <i class="fas fa-exclamation-circle"></i> Запись уже восстановлена из архива.
+                            </h6>
+                        }
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
@@ -25,7 +31,15 @@
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Восстановить" />
+                            @if (Model.IsArchive.GetValueOrDefault())
+                            {
+                                <input type="submit" class="btn btn-info w-100" value="Восстановить" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-info w-100" disabled value="Восстановить" />
+                            }
+
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100">
