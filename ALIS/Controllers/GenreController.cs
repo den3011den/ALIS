@@ -87,6 +87,13 @@ namespace ALIS.Controllers
         {
             if (ModelState.IsValid)
             {
+                Genre isExistsThisName = _genreRepo.FirstOrDefault(u => u.Name.ToLower() == obj.Name.ToLower() && u.Id != obj.Id);
+                if (isExistsThisName != null)
+                {
+                    TempData[WC.Error] = "Жанр с наименованием '" + obj.Name + "' уже существует";
+                    return View(obj);
+                }
+
                 _genreRepo.Update(obj, UpdateMode.Update);
                 _genreRepo.Save();
 

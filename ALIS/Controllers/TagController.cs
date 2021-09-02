@@ -86,6 +86,14 @@ namespace ALIS.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                Tag isExistsThisName = _tagRepo.FirstOrDefault(u => u.Name.ToLower() == obj.Name.ToLower() && u.Id != obj.Id);
+                if (isExistsThisName != null)
+                {
+                    TempData[WC.Error] = "Тэг с наименованием '" + obj.Name + "' уже существует";
+                    return View(obj);
+                }
+
                 _tagRepo.Update(obj, UpdateMode.Update);
                 _tagRepo.Save();
 

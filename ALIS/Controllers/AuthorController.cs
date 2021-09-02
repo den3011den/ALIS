@@ -86,6 +86,15 @@ namespace ALIS.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                Author isExistsThisName = _authorRepo.FirstOrDefault(u => u.Name.ToLower() == obj.Name.ToLower() && u.Id != obj.Id);
+                if (isExistsThisName != null)
+                {
+                    TempData[WC.Error] = "Автор с наименованием '" + obj.Name + "' уже существует";
+                    return View(obj);
+                }
+
+
                 _authorRepo.Update(obj, UpdateMode.Update);
                 _authorRepo.Save();
 

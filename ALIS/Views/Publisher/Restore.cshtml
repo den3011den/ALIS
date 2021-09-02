@@ -1,0 +1,64 @@
+﻿@model ALIS_Models.Publisher
+
+<form method="post" asp-action="Restore">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 bg-white">
+        <div class="form-group row">
+            <h2 class="text-info pl-3">
+                Восстановление издателя из архива
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="Name">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Name" class="form-control" readonly />
+                        @if (!Model.IsArchive.GetValueOrDefault())
+                        {
+                            <h6 class="text-warning pl-3">
+                                <i class="fas fa-exclamation-circle"></i> Запись уже восстановлена из архива.
+                            </h6>
+                        }
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            @if (Model.IsArchive.GetValueOrDefault())
+                            {
+                                <input type="submit" class="btn btn-info w-100" value="Восстановить" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-info w-100" disabled value="Восстановить" />
+                            }
+
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                <i class="fas fa-sign-out-alt"></i>Назад
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                @* Keep this empty *@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+

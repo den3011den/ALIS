@@ -86,6 +86,14 @@ namespace ALIS.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                Grif isExistsThisName = _grifRepo.FirstOrDefault(u => u.Name.ToLower() == obj.Name.ToLower() && u.Id != obj.Id);
+                if (isExistsThisName != null)
+                {
+                    TempData[WC.Error] = "Гриф с наименованием '" + obj.Name + "' уже существует";
+                    return View(obj);
+                }
+
                 _grifRepo.Update(obj, UpdateMode.Update);
                 _grifRepo.Save();
 

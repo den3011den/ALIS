@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ALIS_DataAccess.Repository
 {
-    public class PublisherRepository : Repository<Publisher>, IPublisherRepository
+    public class PersonRepository : Repository<Person>, IPersonRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public PublisherRepository(ApplicationDbContext db) : base(db)
+        public PersonRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
