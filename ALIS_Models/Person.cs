@@ -81,9 +81,12 @@ namespace ALIS_Models
         public string UserId { get; set; }
 
         [NotMapped]
-        [DisplayName("Роль")]
+        [DisplayName("Роль пользователя")]
         public string RoleName { get; set; }
 
+        [NotMapped]
+        [DisplayName("Пользователь не активен")]
+        public bool IsNotActive { get; set; }
 
 
         [InverseProperty(nameof(BookCopy.CurrentHolder))]
