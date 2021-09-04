@@ -48,14 +48,20 @@ namespace ALIS
                 var appConnectionString = Configuration.GetValue<string>("DefaultConnection");
                 var appSendGridKey = Configuration.GetValue<string>("SendGridKey");
                 var appSendGridEmailFrom = Configuration.GetValue<string>("SendGridEmailFrom");
+                var appTpuSmtpUserName = Configuration.GetValue<string>("TpuSmtpUserName");
+                var appTpuSmtpUserPassword = Configuration.GetValue<string>("TpuSmtpUserPassword");
 
                 appConnectionString = StringEncryptionUtility.Encrypt(appConnectionString);                                
                 appSendGridKey = StringEncryptionUtility.Encrypt(appSendGridKey);
                 appSendGridEmailFrom = StringEncryptionUtility.Encrypt(appSendGridEmailFrom);
+                appTpuSmtpUserName = StringEncryptionUtility.Encrypt(appTpuSmtpUserName);
+                appTpuSmtpUserPassword = StringEncryptionUtility.Encrypt(appTpuSmtpUserPassword);
 
                 SetAppSettingValue("DefaultConnection", appConnectionString, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("SendGridKey", appSendGridKey, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("SendGridEmailFrom", appSendGridEmailFrom, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
+                SetAppSettingValue("TpuSmtpUserName", appTpuSmtpUserName, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
+                SetAppSettingValue("TpuSmtpUserPassword", appTpuSmtpUserPassword, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("Encrypted", "YES", System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
 
             }

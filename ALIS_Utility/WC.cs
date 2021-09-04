@@ -18,8 +18,8 @@ namespace ALIS_Utility
 
     public static class WC
     {
-        public const string AdminRole = @"Admin";
-        public const string ClientRole = @"Client";
+        public const string AdminRole = @"Администратор";
+        public const string ClientRole = @"Студент";
 
         public const string Success = @"Success";
         public const string Error = @"Error";

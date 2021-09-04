@@ -81,11 +81,31 @@ namespace ALIS.Areas.Identity.Pages.Account
         
             if (ModelState.IsValid)
             {
+
+
+                // проверка для запрета входа пользователям без подтверждённого email
+                IdentityUser user = await _userManager.FindByNameAsync(Input.Email);
+                if (user != null)
+                {
+                    bool confirmed = await _userManager.IsEmailConfirmedAsync(user);
+                    if (!confirmed)
+                    {
+                        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();                        
+                        ModelState.AddModelError(string.Empty, "Ваш Email не подтверждён. Вход возможен только после подтверждения email (при регистрации Вам было отправлено письмо со ссылкой для подтверждения).");
+                        //TempData[WC.Error] = "Ваш Email не подтверждён. Вход возможен только после подтверждения email (при регистрации Вам было отправлено письмо со ссылкой для подтверждения).";
+                        return Page();
+                    }
+                }
+
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+
                 if (result.Succeeded)
                 {
+
                     _logger.LogInformation("Пользователь вошёл.");
                     TempData[WC.Success] =  "Вы вошли в систему!";
                     return LocalRedirect(returnUrl);
