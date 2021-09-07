@@ -1,6 +1,7 @@
 ﻿using ALIS_DataAccess.Repository.IRepository;
 using ALIS_Models;
 using ALIS_Utility;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace ALIS_DataAccess.Repository
 
         public IEnumerable<Person> GetAll(Expression<Func<Person, bool>> filter = null, Func<IQueryable<Person>, IOrderedQueryable<Person>> orderBy = null, string includeProperties = null, bool isTracking = true);
         void Update(Person obj, UpdateMode UpdateMode, bool needАctivateUser = false);
+        public IEnumerable<SelectListItem> GetAllDropdownRoles();
 
     }
 }

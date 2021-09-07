@@ -2,6 +2,7 @@
 using ALIS_Models;
 using ALIS_Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace ALIS_DataAccess.Repository
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public PersonRepository(ApplicationDbContext db, UserManager<IdentityUser> userManager) : base(db)
+        public PersonRepository(ApplicationDbContext db, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager) : base(db)
         {
             _db = db;
-            _userManager = userManager;            
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
 
@@ -125,6 +128,15 @@ namespace ALIS_DataAccess.Repository
 
             }
 
+        }
+
+        public IEnumerable<SelectListItem> GetAllDropdownRoles()
+        {
+           return _roleManager.Roles.OrderBy(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });        
         }
     }
 }

@@ -1,0 +1,66 @@
+﻿@model ALIS_Models.ViewModels.PersonVM
+@using ALIS_Utility
+
+@{
+    var title = "Предоставление доступа в систему для " + @Model.PersonName;
+}
+
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="PersonId" hidden />
+    <div class="border p-3 bg-white">
+        <div class="form-group row">
+            <h2 class="text-info pl-3">
+                @title
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label>
+                            Email / Логин
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <span class="text-info"><i class="fas fa-info-circle"></i> Проверяйте корректность Email. На него будет отправлено письмо о подтверждении регистрации в системе пользователю. Также его он будет использовать в качестве логина.</span>
+                    </div>
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label>
+                            Роль
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="@Model.Role.Id" asp-items="@Model.RoleList" class="form-select">
+                            <option disabled selected>--Выбрать роль--</option>
+                        </select>
+                        <span asp-validation-for="@Model.Role.Id" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-8 offset-4 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Предоставить доступ" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                <i class="fas fa-sign-out-alt"></i>Назад
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
