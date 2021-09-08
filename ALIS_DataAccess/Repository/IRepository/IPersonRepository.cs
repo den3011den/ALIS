@@ -15,7 +15,7 @@ namespace ALIS_DataAccess.Repository
     {
 
         public IEnumerable<Person> GetAll(Expression<Func<Person, bool>> filter = null, Func<IQueryable<Person>, IOrderedQueryable<Person>> orderBy = null, string includeProperties = null, bool isTracking = true);
-        void Update(Person obj, UpdateMode UpdateMode, bool needАctivateUser = false);
+        void Update(Person obj, UpdateMode UpdateMode);
         public IEnumerable<SelectListItem> GetAllDropdownRoles();
 
     }

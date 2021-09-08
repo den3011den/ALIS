@@ -58,7 +58,7 @@ namespace ALIS_DataAccess.Repository
             return personList;
         }
 
-        public void Update(Person obj, UpdateMode updateMode, bool needАctivateUser = false)
+        public void Update(Person obj, UpdateMode updateMode)
         {
 
             var objFromDb = base.FirstOrDefault(u => u.Id == obj.Id);
@@ -94,30 +94,11 @@ namespace ALIS_DataAccess.Repository
                     case UpdateMode.MoveToArchive:
                         {
                             objFromDb.IsArchive = true;
-                            if (!String.IsNullOrEmpty(objFromDb.UserId))
-                            {
-                                ApplicationUser user = (ApplicationUser)_userManager.FindByIdAsync(objFromDb.UserId).Result;
-                                if (user != null)
-                                {
-                                    user.LockoutEnd = DateTime.Now.AddYears(200);
-                                    _userManager.UpdateAsync(user);
-                                }
-                            }
                             break;
                         }
                     case UpdateMode.RestoreFromArchive:
                         {
                             objFromDb.IsArchive = false;
-                            if (needАctivateUser)
-                                if (!String.IsNullOrEmpty(objFromDb.UserId))
-                                {
-                                    ApplicationUser user = (ApplicationUser)_userManager.FindByIdAsync(objFromDb.UserId).Result;
-                                    if (user != null)
-                                    {
-                                        user.LockoutEnd = null;
-                                        _userManager.UpdateAsync(user);
-                                    }
-                                }
                             break;
                         }
                     default:
