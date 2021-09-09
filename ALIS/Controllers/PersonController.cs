@@ -720,6 +720,56 @@ namespace ALIS.Controllers
         }
 
 
+        //GET - PrintBarCode
+        public IActionResult PrintBarCode(int? id)
+        {
+
+            if (id == null || id == 0)
+            {
+                TempData[WC.Error] = "Пустой ИД персоны";
+                return RedirectToAction("Index");
+            }
+
+            var person = _personRepo.Find(id.GetValueOrDefault());
+
+            if (person == null)
+            {
+                TempData[WC.Error] = "Не найдена персона с ID: " + id.ToString();
+                return RedirectToAction("Index");
+
+            }
+
+            if (person.IsArchive.GetValueOrDefault())
+            {
+                TempData[WC.Error] = "Персона '" + person.Name + " " + person.Surname + " " + person.Patronymic + "' уже у архиве";
+                return RedirectToAction("Index");
+
+            }
+
+            if (String.IsNullOrEmpty(person.Barcode))
+            {
+                TempData[WC.Error] = "У персоны нет штрих-кода";
+                return RedirectToAction("Index");
+
+            }
+
+            person.FullName = person.Surname + " " + person.Name + " " + person.Patronymic;
+            return View(person);
+        }
+
+
+
+        //POST - PrintBarCode
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PrintBarCode(Person Person)
+        {
+
+                return RedirectToAction("Index");
+
+        }
+
+
         #region API CALLS
         [HttpGet]
         public IActionResult GetPersonList()

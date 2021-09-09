@@ -12,9 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ALIS</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/personbarcode.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/fontawersome/css/all.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 </head>
@@ -79,12 +80,14 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            <partial name="_Notifications" />
+            <div class="d-print-none">
+                <partial name="_Notifications" />
+            </div>
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer bg-dark">
+    <footer class="border-top footer bg-dark d-print-none">
         <div class="container text-white-50">
             &copy; ALIS - <a href="http://spospk.ru/">СПК</a>
         </div>

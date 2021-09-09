@@ -85,6 +85,10 @@ namespace ALIS_Models
         public string RoleName { get; set; }
 
         [NotMapped]
+        [DisplayName("Полное имя")]
+        public string FullName { get; set; }
+
+        [NotMapped]
         [DisplayName("Пользователь не активен")]
         public bool IsNotActive { get; set; }
 
