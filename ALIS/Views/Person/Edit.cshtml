@@ -1,0 +1,192 @@
+﻿
+@model ALIS_Models.Person
+
+<form method="post" asp-action="Edit">
+    <input asp-for="Id" hidden />
+    <input asp-for="Barcode" hidden />
+    <input asp-for="UserId" hidden />
+    <input asp-for="User" hidden />
+    <div class="border p-3 bg-white">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">
+                Изменение персоны
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="Surname">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Surname" class="form-control" />
+                        <span asp-validation-for="Surname" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="Name">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="Patronymic">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Patronymic" class="form-control" />
+                        <span asp-validation-for="Patronymic" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="Birthday">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Birthday" class="form-control" type="date" />
+                        <span asp-validation-for="Birthday" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="PhoneNumber">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PhoneNumber" class="form-control" type="tel" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="AltPhoneNumber">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="AltPhoneNumber" class="form-control" type="tel" />
+                        <span asp-validation-for="AltPhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="Email">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Email" class="form-control" type="email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="HomeAddres">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="HomeAddres" class="form-control" />
+                        <span asp-validation-for="HomeAddres" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="GroupNumber">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="GroupNumber" class="form-control" />
+                        <span asp-validation-for="GroupNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="PasportSerial">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PasportSerial" class="form-control" />
+                        <span asp-validation-for="PasportSerial" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="PasportNumber">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PasportNumber" class="form-control" />
+                        <span asp-validation-for="PasportNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="PasportIssueDate">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PasportIssueDate" class="form-control" type="date" />
+                        <span asp-validation-for="PasportIssueDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        <label asp-for="PasportIssuedBy">
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PasportIssuedBy" class="form-control" />
+                        <span asp-validation-for="PasportIssuedBy" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row py-2">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Сохранить" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                <i class="fas fa-sign-out-alt"></i>Назад
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                @* Keep this empty *@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+
+

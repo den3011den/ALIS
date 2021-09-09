@@ -770,6 +770,123 @@ namespace ALIS.Controllers
         }
 
 
+
+        // GET - Create
+        public IActionResult Create()
+        {            
+            return View();
+        }
+
+        //POST - CREATE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Person person)
+        {
+            ModelState.Remove("Role");
+            if (ModelState.IsValid)
+            {            
+                person.User = null;
+                person.CreateDate = DateTime.Now;
+                person.UserId = null;
+                if (person.Patronymic == null)
+                    person.Patronymic = "";
+                person.FullName = person.Surname + " " + person.Name + " " + person.Patronymic;
+                person.IsArchive = false;
+                person.Barcode = "p-222";
+                try
+                { 
+                _personRepo.Add(person);
+                _personRepo.Save();                 
+                }
+                catch(Exception ex)
+                {
+                    TempData[WC.Error] = "Не удалось создать персону '" + person.FullName + "'";
+                    return View(person);
+                }
+
+                try
+                {                    
+                    if(person!=null)
+                    { 
+                        person.Barcode = "p-" + (person.Id.ToString()).PadLeft(6, '0');
+                        _personRepo.Update(person, UpdateMode.Update);
+                        _personRepo.Save();
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+
+
+                TempData[WC.Success] = "Персона '" + person.FullName + "' успешно создана";
+                return RedirectToAction("Index");
+            }
+            TempData[WC.Error] = "Не удалось создать персону. Не все обязательные поля заполнены или заполнены неверно.";
+
+            return View(person);
+        }
+
+
+        //EDIT - GET
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                TempData[WC.Error] = "Пустой ИД персоны";
+                return RedirectToAction("Index");
+            }
+
+            var person = _personRepo.Find(id.GetValueOrDefault());
+
+            if (person == null)
+            {
+                TempData[WC.Error] = "Не найдена персона с ИД: " + id.ToString();
+                return RedirectToAction("Index");
+
+            }
+
+            return View(person);
+        }
+
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Person obj)
+        {
+            ModelState.Remove("Role");
+            if (ModelState.IsValid)
+            {
+
+                var person = _personRepo.Find(obj.Id);
+
+                if(person==null)
+                {
+                    TempData[WC.Error] = "Персона не найдена!";                     
+                    return View(obj);
+                }
+
+                person = obj;
+
+                person.FullName = person.Surname + " " + person.Name + " " + person.Patronymic;                
+                try
+                {
+                    _personRepo.Update(person, UpdateMode.Update);
+                    _personRepo.Save();
+                }
+                catch (Exception ex)
+                {
+                    TempData[WC.Error] = "Не удалось обновить данные персоны '" + person.FullName + "'";
+                    return View(person);
+                }
+
+                TempData[WC.Success] = "Персона '" + person.FullName + "' успешно обновлена";
+                return RedirectToAction("Index");
+            }
+            TempData[WC.Error] = "Не удалось обновить данные персоны. Не все обязательные поля заполнены или заполнены неверно.";
+
+            return View(obj);
+        }
+
         #region API CALLS
         [HttpGet]
         public IActionResult GetPersonList()
