@@ -14,6 +14,10 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using FastReport;
+using FastReport.Web;
+using System.Data;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ALIS.Controllers
 {
@@ -24,17 +28,19 @@ namespace ALIS.Controllers
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
+        public IWebHostEnvironment _env { get; set; }
 
         [BindProperty]
         public PersonVM PersonVM { get; set; }
 
         public PersonController(IPersonRepository personRepo, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IWebHostEnvironment env)
         {
             _personRepo = personRepo;
             _roleManager = roleManager;
             _userManager = userManager;
             _emailSender = emailSender;
+            _env = env;
             PersonVM = new PersonVM();
 
         }
@@ -754,22 +760,134 @@ namespace ALIS.Controllers
             }
 
             person.FullName = person.Surname + " " + person.Name + " " + person.Patronymic;
-            return View(person);
+
+
+            WebReport webReport = new WebReport();//создание компонента 
+            webReport.Width = "100%";//ширина на всю страницу 
+
+            DataSet data = new DataSet();
+
+            data.DataSetName = "ItemsDataSet";
+
+            DataTable dt = new DataTable("Items");
+            
+            dt.Columns.Add(new DataColumn("FullName", typeof(string)));
+            dt.Columns.Add(new DataColumn("BarCode", typeof(string)));
+
+            DataRow dr = dt.NewRow();
+
+            {
+
+                dr["FullName"] = person.FullName;
+                dr["BarCode"] = person.Barcode;
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["FullName"] = "Person 2";
+                dr["BarCode"] = "p-000024";
+                dt.Rows.Add(dr);
+
+
+            }
+
+            data.Tables.Add(dt);
+
+            webReport.Report.Load(System.IO.Path.Combine(_env.WebRootPath + "/reports", "PersonCard.frx"));//загружаем шаблон отчета 
+            webReport.Report.RegisterData(data, "ItemsDataSet");//регистрируем источник данных 
+            webReport.Report.GetDataSource("Items").Enabled = true;//выбираем таблицу (их может быть много в наборе данных) 
+            (webReport.Report.FindObject("Data1") as DataBand).DataSource = webReport.Report.GetDataSource("Items");//устанавливаем бенду в отчете привязку к данным (бендов и страниц может быть много в отчете) 
+            webReport.Report.Prepare();//формируем отчет 
+
+            ViewBag.WebReport = webReport;//выводим на форму 
+
+            return View();
+
         }
-
-
-
-        //POST - PrintBarCode
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult PrintBarCode(Person Person)
-        {
-
-                return RedirectToAction("Index");
-
-        }
-
-
 
         // GET - Create
         public IActionResult Create()

@@ -47,7 +47,7 @@ function loadDataTable(url) {
             {
                 "data": "barcode",
                 "render": function (data, type, row, meta) {
-                    return `<a href="/${model_name}/PrintBarCode/${row.id}" style="cursor:pointer" title="Печатать карточку сотрудника">${row.barcode}</a>`;
+                    return `<a href="/${model_name}/PrintBarCode/${row.id}" style="cursor:pointer" target="_blank" title="Печатать карточку сотрудника">${row.barcode}</a>`;
                 },
                 "width": "10%"
             },

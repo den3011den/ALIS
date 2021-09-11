@@ -6,9 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FastReport.OpenSource" Version="2021.4.3" />
+    <PackageReference Include="FastReport.OpenSource.Web" Version="2021.4.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,6 +25,10 @@
     <ProjectReference Include="..\ALIS_DataAccess\ALIS_DataAccess.csproj" />
     <ProjectReference Include="..\ALIS_Models\ALIS_Models.csproj" />
     <ProjectReference Include="..\ALIS_Utility\ALIS_Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
 </Project>

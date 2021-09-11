@@ -142,6 +142,8 @@ namespace ALIS
             app.UseAuthorization();
             dbInitializer.Initialize();
 
+            app.UseFastReport();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

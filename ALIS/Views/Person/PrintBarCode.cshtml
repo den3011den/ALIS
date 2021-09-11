@@ -1,54 +1,9 @@
-﻿@model ALIS_Models.Person
-@using ALIS_Utility
+﻿@*@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}*@
 
-@{
-    var title = "Печать карточки читателя для " + @Model.FullName;
-}
+<div>
+    @await ViewBag.WebReport.Render()
+</div>
 
-<form method="post" enctype="multipart/form-data">
-    @*<input asp-for="PersonId" hidden />*@
-
-    <div class="row">
-        <div class="col-8">
-            <div class="form-group row py-2">
-                <div class="col-8 offset-4 row">
-
-                    <div class="card-container">
-                        <div class="card">
-                            <div class="back card__image">
-                                <div class="text">
-                                    @Model.FullName
-                                    <div class="barcode">
-                                        @Model.Barcode
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group row py-2">
-                <div class="col-8 offset-4 row">
-                    <div class="col">
-                        <input type="submit" class="btn btn-info w-100 d-print-none" value="Печатать" onclick="window.print(); return false;"/>
-                    </div>
-                    <div class="col">
-                        <a asp-action="Index" class="btn btn-success w-100 d-print-none">
-                            <i class="fas fa-sign-out-alt"></i>Назад
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</form>
-
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}
 
