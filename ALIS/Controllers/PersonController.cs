@@ -18,6 +18,7 @@ using FastReport;
 using FastReport.Web;
 using System.Data;
 using Microsoft.AspNetCore.Hosting;
+using System.Text.Json;
 
 namespace ALIS.Controllers
 {
@@ -725,7 +726,6 @@ namespace ALIS.Controllers
 
         }
 
-
         //GET - PrintBarCode
         public IActionResult PrintBarCode(int? id)
         {
@@ -781,97 +781,6 @@ namespace ALIS.Controllers
                 dr["FullName"] = person.FullName;
                 dr["BarCode"] = person.Barcode;
                 dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
-                dr = dt.NewRow();
-                dr["FullName"] = "Person 2";
-                dr["BarCode"] = "p-000024";
-                dt.Rows.Add(dr);
-
 
             }
 
@@ -1003,6 +912,57 @@ namespace ALIS.Controllers
             TempData[WC.Error] = "Не удалось обновить данные персоны. Не все обязательные поля заполнены или заполнены неверно.";
 
             return View(obj);
+        }
+
+
+        //GET - PrintBarCode
+        public IActionResult PrintBarCodeSelected(int? id)
+        {
+
+            string parametersFromRequest = HttpContext.Request.Query["selected_items"];
+
+            var paramMass = JsonSerializer.Deserialize<int[]>(parametersFromRequest);
+
+            WebReport webReport = new WebReport();//создание компонента 
+            webReport.Width = "100%";//ширина на всю страницу 
+
+            DataSet data = new DataSet();
+
+            data.DataSetName = "ItemsDataSet";
+
+            DataTable dt = new DataTable("Items");
+
+            dt.Columns.Add(new DataColumn("FullName", typeof(string)));
+            dt.Columns.Add(new DataColumn("BarCode", typeof(string)));
+
+            
+
+            {
+
+                Person person;
+                foreach(int element in paramMass)
+                {
+                    DataRow dr = dt.NewRow();
+                    person = _personRepo.FirstOrDefault(u => u.Id == element);
+                    dr["FullName"] = person.Surname + " " + person.Name + " " + person.Patronymic;
+                    dr["BarCode"] = person.Barcode;
+                    dt.Rows.Add(dr);
+
+                }
+            }
+
+            data.Tables.Add(dt);
+
+            webReport.Report.Load(System.IO.Path.Combine(_env.WebRootPath + "/reports", "PersonCard.frx"));//загружаем шаблон отчета 
+            webReport.Report.RegisterData(data, "ItemsDataSet");//регистрируем источник данных 
+            webReport.Report.GetDataSource("Items").Enabled = true;//выбираем таблицу (их может быть много в наборе данных) 
+            (webReport.Report.FindObject("Data1") as DataBand).DataSource = webReport.Report.GetDataSource("Items");//устанавливаем бенду в отчете привязку к данным (бендов и страниц может быть много в отчете) 
+            webReport.Report.Prepare();//формируем отчет 
+
+            ViewBag.WebReport = webReport;//выводим на форму 
+
+            return View();
+
         }
 
         #region API CALLS

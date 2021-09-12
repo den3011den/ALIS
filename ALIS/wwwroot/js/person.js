@@ -1,20 +1,26 @@
-﻿var dataTable;
+﻿//const { error } = require("jquery");
+
+//const { post } = require("jquery");
+
+var dataTable;
 
 var api_url = window.api_url || null;
 var model_name = window.model_name || null;
+var print_selected_url = window.print_selected_url || null;
 
+
+    
 $(document).ready(function () {
     loadDataTable("");
     $('#myTable').DataTable();
-
 });
 
 function loadDataTable(url) {
+    
     dataTable = $("#tblData").DataTable({
-
         "initComplete":
             function () {
-                this.api().column(7).every(function () {
+                this.api().column(8).every(function () {
                     var column = this;
                     column.search('false').draw();
                     var select = $('#show_archive_records')
@@ -28,7 +34,7 @@ function loadDataTable(url) {
             },
 
         /*"order": [[2, "asc"], [1, 'asc']],*/
-        "order": [1, 'asc'],
+        "order": [2, 'asc'],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
         },
@@ -36,6 +42,25 @@ function loadDataTable(url) {
             "url": api_url + url
         },
         "columns": [
+            {
+                "data": "isSelected",
+                "render": function (data, type, row, meta) {
+                        if (data === true) {
+                            return `
+                                   <div style="text-align: center;">
+                                         <input type="checkbox" checked>
+                                   </div>`
+                                ;
+                        } else {
+                            return `
+                                    <div style="text-align: center;">
+                                        <input type="checkbox">
+                                    </div>`;
+                        }
+                        return data;
+                    },
+                "width": "3%"
+            },
             { "data": "id", "width": "3%" },
             {
                 "data": "name",
@@ -47,7 +72,7 @@ function loadDataTable(url) {
             {
                 "data": "barcode",
                 "render": function (data, type, row, meta) {
-                    return `<a href="/${model_name}/PrintBarCode/${row.id}" style="cursor:pointer" target="_blank" title="Печатать карточку сотрудника">${row.barcode}</a>`;
+                    return `<a href="/${model_name}/PrintBarCode/${row.id}" style="cursor:pointer" target="_blank" title="Печатать карточку сотрудника">${row.barcode}</a>`;     
                 },
                 "width": "10%"
             },
@@ -55,12 +80,10 @@ function loadDataTable(url) {
             {
                 "data": "userId",
                 "render": function (data, type, row, meta) {
-                    //if (isEmpty(row.user_id) || isBlank(row.user_id) || row.isnotactive)
-                    //if (isBlank(row.userId) || row.isNotActive || (row.userId === ""))
-                    if ((row.userId === "") || (row.userId === null) || (row.isNotActive===true))
-                    {
+
+                    if ((row.userId === "") || (row.userId === null) || (row.isNotActive === true)) {
                         return `
-                        <div style="text-align: center;">                            
+                        <div style="text-align: center;">
                                 <a href="/${model_name}/ActivateUserForPerson/${row.id}" class="btn text-primary" style="cursor:pointer" title="Дать доступ в систему">
                                    <i class="far fa-square"></i>
                                  </a>
@@ -115,8 +138,9 @@ function loadDataTable(url) {
 
                 },
                 "width": "1%"
-            },            
-            {"data": "isArchive",
+            },
+            {
+                "data": "isArchive",
                 "render": function (data) {
                     if (data === true) {
                         return `true`;
@@ -138,11 +162,47 @@ function loadDataTable(url) {
             );
         }
 
-        dataTable.draw();
+        dataTable.draw();        
 
         if (this.checked) {
             $.fn.dataTable.ext.search.pop();
         }
     });
 
+    $('#print_bar_code_selected').on('click', function () {
+
+        window.selected_items.clear();        
+
+         dataTable.rows().eq(0).each(function (index) {
+            var row = dataTable.row(index);
+            var data = row.data();
+
+            if (data.isSelected === true)
+                window.selected_items.add(data.id);
+            else
+                window.selected_items.delete(data.id);
+            }        
+        );
+
+        let array = [];
+        window.selected_items.forEach(v => array.push(v));
+
+        var url_new = print_selected_url + '?selected_items=' + JSON.stringify(array);
+        
+        window.open(url_new, '_blank');
+
+        return true;
+    });
+
+
+    $('#tblData tbody').on('click', 'input', function () {
+        var data = dataTable.row($(this).parents('tr')).data();
+        if (data.isSelected === true)
+            data.isSelected = false;
+        else
+            data.isSelected = true;
+        //alert(data[0] + "'s salary is: " + data[5]);
+        //editMember(data[0]);
+    });
 }
+

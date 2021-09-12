@@ -92,6 +92,11 @@ namespace ALIS_Models
         [DisplayName("Пользователь не активен")]
         public bool IsNotActive { get; set; }
 
+        [NotMapped]
+        [DisplayName("Выбор")]
+        public bool IsSelected { get; set; }
+
+
 
         [InverseProperty(nameof(BookCopy.CurrentHolder))]
         public virtual ICollection<BookCopy> BookCopies { get; set; }
