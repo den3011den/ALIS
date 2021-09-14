@@ -19,6 +19,7 @@ using FastReport.Web;
 using System.Data;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json;
+using System.Security.Claims;
 
 namespace ALIS.Controllers
 {
@@ -148,6 +149,16 @@ namespace ALIS.Controllers
 
                     if (!String.Equals(PersonVM.Email.ToLower().Trim(), user.Email.ToLower().Trim()))
                     {
+
+                        ApplicationUser duplicateUser = (ApplicationUser)_userManager.FindByEmailAsync(PersonVM.Email.Trim().ToUpper()).GetAwaiter().GetResult();
+                        if (duplicateUser != null)
+                        {
+                            TempData[WC.Error] = "Пользователь '" + duplicateUser.FullName + "' уже зарегистрирован в системе с email '" + duplicateUser.Email + "'!";
+                            GetRoles(person.UserId);
+                            return View(PersonVM);
+                        }
+
+
                         user.EmailConfirmed = false;
                         user.UserName = PersonVM.Email.ToLower().Trim();
                         needMailConfirmation = true;
@@ -155,6 +166,15 @@ namespace ALIS.Controllers
                 }
                 else
                 {
+
+                    ApplicationUser duplicateUser = (ApplicationUser)_userManager.FindByEmailAsync(PersonVM.Email.Trim().ToUpper()).GetAwaiter().GetResult();
+                    if (duplicateUser != null)
+                    {
+                        TempData[WC.Error] = "Пользователь '" + duplicateUser.FullName + "' уже зарегистрирован в системе с email '" + duplicateUser.Email + "'!";
+                        GetRoles("");
+                        return View(PersonVM);
+                    }
+
                     needAddUser = true;
                     needMailConfirmation = false;
                     user.EmailConfirmed = true;
@@ -165,10 +185,10 @@ namespace ALIS.Controllers
                     user.LockoutEnd = null;
 
                 }
+                 
 
                 if (needAddUser)
                 {
-
                     try
                     {
                         _userManager.CreateAsync(user).GetAwaiter().GetResult();
@@ -182,7 +202,7 @@ namespace ALIS.Controllers
                     user = (ApplicationUser)_userManager.FindByEmailAsync(user.Email).GetAwaiter().GetResult();
                 }
                 else
-                {
+                {                     
                     _userManager.UpdateAsync(user).GetAwaiter().GetResult();
                 }
 
@@ -280,7 +300,7 @@ namespace ALIS.Controllers
             }
 
             TempData[WC.Error] = "Не все или неверно заполнены данные";
-            GetRoles(person.UserId);
+            GetRoles("");
             return View(PersonVM);
         }
 
@@ -291,15 +311,30 @@ namespace ALIS.Controllers
 
             if (id == null || id == 0)
             {
-                return NotFound();
+                TempData[WC.Error] = "Пустой ИД персоны!";
+                GetRoles("");
+                return View(PersonVM);
             }
 
             var person = _personRepo.Find(id.GetValueOrDefault());
 
             if (person == null)
             {
-                return NotFound();
+                TempData[WC.Error] = "Персона с ИД " + id.ToString() + " не найдена!";
+                GetRoles("");
+                return View(PersonVM);
+
             }
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);            
+
+            if (String.Equals(claim.Value.ToLower().Trim(), person.UserId.ToLower().Trim()))
+            {
+                TempData[WC.Error] = "Нельзя отзывать доступ в систему самому себе";
+                return RedirectToAction("Index");
+            }
+
 
             PersonVM.PersonId = person.Id;
             PersonVM.PersonName = person.Name + " " + person.Surname + " " + person.Patronymic;
@@ -308,6 +343,8 @@ namespace ALIS.Controllers
 
             GetRoles(person.UserId);
 
+
+ 
             return View(PersonVM);
         }
 
@@ -428,6 +465,16 @@ namespace ALIS.Controllers
                 return RedirectToAction("Index");
             }
 
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (String.Equals(claim.Value.ToLower().Trim(), person.UserId.ToLower().Trim()))
+            {
+                TempData[WC.Error] = "Нельзя менять роль самому себе";
+                return RedirectToAction("Index");
+            }
+
+
             PersonVM.Email = _userManager.FindByIdAsync(person.UserId).GetAwaiter().GetResult().Email;
 
             GetRoles(person.UserId);
@@ -494,7 +541,7 @@ namespace ALIS.Controllers
                     _emailSender.SendEmailAsync(
                     user.Email,
                     "ALIS: Изменение роли доступа в систему",
-                    $"Администратор изменил Вашу роль в системе на {roleName} для логина {newEmail}. Вход на сайт <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>по этой ссылке.</a>.");
+                    $"Администратор изменил Вашу роль в системе на '{roleName}' для логина '{newEmail}'. Вход на сайт <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>по этой ссылке.</a>.");
 
                     TempData[WC.Success] = "Роль " + roleName + " успешно предоставлена персоне '" + user.FullName + "'";
 
@@ -546,6 +593,18 @@ namespace ALIS.Controllers
 
             }
 
+            if (!String.IsNullOrEmpty(person.UserId))
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (String.Equals(claim.Value.ToLower().Trim(), person.UserId.ToLower().Trim()))
+                {
+                    TempData[WC.Error] = "Нельзя удалять самого себя в архив";
+                    return RedirectToAction("Index");
+                }
+
+            }
 
             PersonVM.PersonId = person.Id;
             PersonVM.PersonName = person.Name + " " + person.Surname + " " + person.Patronymic;
@@ -669,6 +728,19 @@ namespace ALIS.Controllers
             {
                 TempData[WC.Error] = "Персона '" + person.Name + " " + person.Surname + " " + person.Patronymic + "' уже НЕ в архиве";
                 return RedirectToAction("Index");
+
+            }
+
+            if (!String.IsNullOrEmpty(person.UserId))
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (String.Equals(claim.Value.ToLower().Trim(), person.UserId.ToLower().Trim()))
+                {
+                    TempData[WC.Error] = "Нельзя восстанавливать самого себя из архива";
+                    return RedirectToAction("Index");
+                }
 
             }
 
