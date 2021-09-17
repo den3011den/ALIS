@@ -842,15 +842,19 @@ namespace ALIS.Controllers
             data.DataSetName = "ItemsDataSet";
 
             DataTable dt = new DataTable("Items");
-            
-            dt.Columns.Add(new DataColumn("FullName", typeof(string)));
+
+            dt.Columns.Add(new DataColumn("Surname", typeof(string)));
+            dt.Columns.Add(new DataColumn("Name", typeof(string)));
+            dt.Columns.Add(new DataColumn("Patronymic", typeof(string)));
             dt.Columns.Add(new DataColumn("BarCode", typeof(string)));
 
             DataRow dr = dt.NewRow();
 
             {
 
-                dr["FullName"] = person.FullName;
+                dr["Surname"] = person.Surname;
+                dr["Name"] = person.Name;
+                dr["Patronymic"] = person.Patronymic;
                 dr["BarCode"] = person.Barcode;
                 dt.Rows.Add(dr);
 
@@ -1004,7 +1008,9 @@ namespace ALIS.Controllers
 
             DataTable dt = new DataTable("Items");
 
-            dt.Columns.Add(new DataColumn("FullName", typeof(string)));
+            dt.Columns.Add(new DataColumn("Surname", typeof(string)));
+            dt.Columns.Add(new DataColumn("Name", typeof(string)));
+            dt.Columns.Add(new DataColumn("Patronymic", typeof(string)));
             dt.Columns.Add(new DataColumn("BarCode", typeof(string)));
 
             
@@ -1016,7 +1022,9 @@ namespace ALIS.Controllers
                 {
                     DataRow dr = dt.NewRow();
                     person = _personRepo.FirstOrDefault(u => u.Id == element);
-                    dr["FullName"] = person.Surname + " " + person.Name + " " + person.Patronymic;
+                    dr["Surname"] = person.Surname;
+                    dr["Name"] = person.Name;
+                    dr["Patronymic"] = person.Patronymic;
                     dr["BarCode"] = person.Barcode;
                     dt.Rows.Add(dr);
 
