@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -26,6 +28,8 @@ namespace ALIS_Models
         public string Name { get; set; }
         public bool? IsArchive { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         [InverseProperty(nameof(BooksToAuthor.Author))]
         public virtual ICollection<BooksToAuthor> BooksToAuthors { get; set; }
     }

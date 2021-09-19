@@ -50,18 +50,21 @@ namespace ALIS
                 var appSendGridEmailFrom = Configuration.GetValue<string>("SendGridEmailFrom");
                 var appTpuSmtpUserName = Configuration.GetValue<string>("TpuSmtpUserName");
                 var appTpuSmtpUserPassword = Configuration.GetValue<string>("TpuSmtpUserPassword");
+                var appSyncfusionLicenseKey = Configuration.GetValue<string>("SyncfusionLicenseKey");
 
                 appConnectionString = StringEncryptionUtility.Encrypt(appConnectionString);                                
                 appSendGridKey = StringEncryptionUtility.Encrypt(appSendGridKey);
                 appSendGridEmailFrom = StringEncryptionUtility.Encrypt(appSendGridEmailFrom);
                 appTpuSmtpUserName = StringEncryptionUtility.Encrypt(appTpuSmtpUserName);
                 appTpuSmtpUserPassword = StringEncryptionUtility.Encrypt(appTpuSmtpUserPassword);
+                appSyncfusionLicenseKey = StringEncryptionUtility.Encrypt(appSyncfusionLicenseKey);
 
                 SetAppSettingValue("DefaultConnection", appConnectionString, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("SendGridKey", appSendGridKey, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("SendGridEmailFrom", appSendGridEmailFrom, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("TpuSmtpUserName", appTpuSmtpUserName, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("TpuSmtpUserPassword", appTpuSmtpUserPassword, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
+                SetAppSettingValue("SyncfusionLicenseKey", appSyncfusionLicenseKey, System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
                 SetAppSettingValue("Encrypted", "YES", System.IO.Path.Combine(env.ContentRootPath, "appsettings.json"));
 
             }
@@ -143,6 +146,10 @@ namespace ALIS
             dbInitializer.Initialize();
 
             app.UseFastReport();
+
+
+            var SyncfusionLicenseKey = StringEncryptionUtility.Decrypt(Configuration.GetValue<string>("SyncfusionLicenseKey"));
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(SyncfusionLicenseKey);
 
             app.UseEndpoints(endpoints =>
             {

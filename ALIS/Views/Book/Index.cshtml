@@ -1,8 +1,103 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model ALIS_Models.ViewModels.BookListVM
+@*toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })"*@
 
-<h1>Это Список книг</h1>
+
+<h1>Книги</h1>
+<div class="control-section">
+    <ejs-grid id="Grid" dataSource="@Model.BookList" toolbar="@(new List<string>() {"Add", "Search" })" allowPaging="true" allowFiltering="true" allowSorting="true" locale="ru-RU" allowTextWrap="true" enableHover="true" gridLines="Both" height="550" width="auto" allowSelection="true">
+        <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+        <e-grid-filterSettings type="Menu"></e-grid-filterSettings>
+        <e-grid-selectionsettings persistSelection="true" type="Multiple" checkboxOnly="true"></e-grid-selectionsettings>
+        <e-grid-pagesettings pageCount="5 " pageSize="8"></e-grid-pagesettings>
+        <e-grid-columns>
+            <e-grid-column field="IsSelected" allowFiltering="false" type="checkbox" width="10" allowSorting="true"></e-grid-column>
+            @*<e-grid-column field="Id" headerText="№" isPrimaryKey="true" allowFiltering="false" validationRules="@(new { required=true, number=true})" textAlign="Center" width="20"
+                       template="<small>${Id}</small>">
+        </e-grid-column>*@
+            <e-grid-column field="Name" headerText="Наименование" validationRules="@(new { required=true, number=false})" textAlign="Left" width="55"
+                           template="<a ref='nofollow' href='Book/Edit/${Id}' title='Редактировать запись'>${Name}</a>">
+                @*template="<small><b>${Name}</b></small>">*@
+            </e-grid-column>
+            <e-grid-column field="AuthorListString" headerText="Авторы" validationRules="@(new { required=true, number=false})" textAlign="Left" width="50"
+                           template="<small>${AuthorListString}</small>">
+            </e-grid-column>
+            <e-grid-column field="Genre.Name" headerText="Жанр" validationRules="@(new { required=true, number=false})" textAlign="Left" width="30"
+                           template="<small>${Genre.Name}</small>">
+            </e-grid-column>
+            <e-grid-column field="Publisher.Name" headerText="Издатель" validationRules="@(new { required=true, number=false})" textAlign="Left" width="38"
+                           template="<small>${Publisher.Name}</small>">
+            </e-grid-column>
+            <e-grid-column field="Grif.Name" headerText="Гриф" validationRules="@(new { required=true, number=false})" textAlign="Left" width="30"
+                           template="<small>${Grif.Name}</small>">
+            </e-grid-column>
+            @*<e-grid-column field="Isbn" headerText="ISBN" validationRules="@(new { required=true, number=false})" textAlign="Left" width="32"
+        template="<small>${Isbn}</small>">
+        </e-grid-column>*@
+            @*<e-grid-column field="PublicationYear" headerText="Год" validationRules="@(new { required=true, number=true})" textAlign="Left" width="20"
+                           template="<small>${PublicationYear}</small>">
+            </e-grid-column>*@
+            @*<e-grid-column field="Bbk" headerText="ББК" validationRules="@(new { required=true, number=false})" textAlign="Left" width="30"
+        template="<small>${Bbk}</small>">
+        </e-grid-column>*@
+            @*<e-grid-column field="NumberOfPages" headerText="Стр" validationRules="@(new { required=true, number=true})" textAlign="Left" width="30"
+        template="<small>${NumberOfPages}</small>">
+        </e-grid-column>*@
+            @*<e-grid-column field="CopyrightMark" headerText="С" validationRules="@(new { required=true, number=false})" textAlign="Left" width="30"
+        template="<small>${CopyrightMark}</small>">
+        </e-grid-column>*@
+            <e-grid-column field="TagListString" headerText="Тэги" validationRules="@(new { required=true, number=false})" textAlign="Left" width="40"
+                           template="<details><summary>Показать</summary><small>${TagListString}</small></details>">
+            </e-grid-column>
+            <e-grid-column field="NumberOfCopies" headerText="Всего" validationRules="@(new { required=true, number=true})" textAlign="Left" width="20"
+                           template="<small>${NumberOfCopies}</small>">
+            </e-grid-column>
+            <e-grid-column field="NumberOfAvailableCopies" headerText="Есть" validationRules="@(new { required=true, number=true})" textAlign="Left" width="20"
+                           template="<small>${NumberOfAvailableCopies}</small>">
+            </e-grid-column>
+            <e-grid-column field="IsArchive" headerText="Арх" textAlign="Center" width="20"
+                template="#template">
+            </e-grid-column>
+            <e-grid-column field="Id" headerText="" validationRules="@(new { required=true, number=true})" textAlign="Left" width="20" allowFiltering="false" allowSorting="false"
+                       template="<a ref='nofollow' href='Book/BookCopies/${Id}' class='btn btn-primary' title='Список экземпляров'> <i class='fas fa-list'></i></a>">
+        </e-grid-column>
+
+            @*<e-grid-column field="OrderID" headerText="Order ID" isPrimaryKey="true" validationRules="@(new { required=true, number=true})" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="CustomerID" headerText="Customer Name" validationRules="@(new { required=true})" width="150"></e-grid-column>
+        <e-grid-column field="Freight" headerText="Freight" validationRules="@(new { required=true})" textAlign="Right" editType="numericedit" format="C2" width="120"></e-grid-column>
+        <e-grid-column field="OrderDate" headerText="Order Date" editType="datepickeredit" format="yMd" width="170"></e-grid-column>
+        <e-grid-column field="ShipCountry" headerText="Ship Country" editType="dropdownedit" width="150"></e-grid-column>
+        <e-grid-column field="Verified" headerText="Verified" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>*@
+        </e-grid-columns>
+    </ejs-grid>
+</div>
+
+@*<div class="col-lg-4 property-section">
+            <table id="property" title="Properties" style="width: 100%;">
+                        <tr>
+                <td class="left-side">Filter Type :</td>
+                <td>
+                    <ejs-dropdownlist id="filtertype" dataSource="@Model.BookList.filtertype" value="@("Menu")" change="onChange" index="2" popupHeight="220px"></ejs-dropdownlist>
+                </td>
+            </tr>
+        </table>
+    </div>*@
+
+<script>
+    function onChange() {
+        var gridObj = document.getElementById("Grid").ej2_instances[0], dropdpwnObj = document.getElementById("filtertype").ej2_instances[0];
+        gridObj.filterSettings.type = dropdpwnObj.value;
+    }
+</script>
+
+
+<script id="template" type="text/x-template">
+    <div class="template_checkbox">
+        ${if(IsArchive)}
+        <a href='/Book/RestoreBookFromArchive/${Id}' class='btn text-danger' style='cursor:pointer' title='Восстановить из архива'><i class='far fa-check-square'></i></a>
+        ${else}
+        <a href='/Book/MoveBookToArchive/${Id}' class='btn text-primary' style='cursor:pointer' title='Удалить в архив'><i class='far fa-square'></i></a>
+        ${/if}
+    </div>
+</script>
+
 

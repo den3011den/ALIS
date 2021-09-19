@@ -97,7 +97,8 @@ namespace ALIS_DataAccess.Migrations
                         .HasColumnType("character varying")
                         .HasComment("Описание книги");
 
-                    b.Property<int>("GenreId")
+                    b.Property<int?>("GenreId")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("Genre_id")
                         .HasComment("id жанра книги (Genres)");
@@ -139,7 +140,8 @@ namespace ALIS_DataAccess.Migrations
                         .HasColumnType("smallint")
                         .HasComment("Год публикации");
 
-                    b.Property<int>("PublisherId")
+                    b.Property<int?>("PublisherId")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("Publisher_id")
                         .HasComment("id издателя книги (Publishers)");

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -27,6 +29,8 @@ namespace ALIS_Models
         [ForeignKey(nameof(AuthorTypeId))]
         [InverseProperty("BooksToAuthors")]
         public virtual AuthorType AuthorType { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         [ForeignKey(nameof(BookId))]
         [InverseProperty("BooksToAuthors")]
         public virtual Book Book { get; set; }
