@@ -89,6 +89,7 @@ namespace ALIS_DataAccess.Repository
                             objFromDb.UserId = obj.UserId;
                             objFromDb.RoleName = obj.RoleName;
                             objFromDb.IsNotActive = obj.IsNotActive;
+                            objFromDb.PhotoPath = obj.PhotoPath;
                             break;
                         }
                     case UpdateMode.MoveToArchive:

@@ -20,6 +20,7 @@ using System.Data;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json;
 using System.Security.Claims;
+using System.IO;
 
 namespace ALIS.Controllers
 {
@@ -885,6 +886,7 @@ namespace ALIS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Person person)
         {
+
             ModelState.Remove("Role");
             if (ModelState.IsValid)
             {            
@@ -896,6 +898,24 @@ namespace ALIS.Controllers
                 person.FullName = person.Surname + " " + person.Name + " " + person.Patronymic;
                 person.IsArchive = false;
                 person.Barcode = "p-222";
+                
+                var files = HttpContext.Request.Form.Files;
+                string webRootPath = _env.WebRootPath;
+
+                if (files.Any())
+                {
+                    string upload = webRootPath + WC.PhotoPath;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(files[0].FileName);
+
+                    using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                    {
+                        files[0].CopyTo(fileStream);
+                    }
+
+                    person.PhotoPath = fileName + extension;
+                }
+
                 try
                 { 
                 _personRepo.Add(person);
@@ -970,7 +990,39 @@ namespace ALIS.Controllers
 
                 person = obj;
 
-                person.FullName = person.Surname + " " + person.Name + " " + person.Patronymic;                
+                person.FullName = person.Surname + " " + person.Name + " " + person.Patronymic;
+
+                var files = HttpContext.Request.Form.Files;
+                string webRootPath = _env.WebRootPath;
+
+                if (files.Any())
+                {
+                    string upload = webRootPath + WC.PhotoPath;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(files[0].FileName);
+
+                    var oldFile = "";
+                    if (!String.IsNullOrEmpty(person.PhotoPath))
+                        oldFile = Path.Combine(upload, person.PhotoPath);
+
+                    if (!String.IsNullOrEmpty(oldFile))
+                        if (System.IO.File.Exists(oldFile))
+                            System.IO.File.Delete(oldFile);
+
+                    using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                    {
+                        files[0].CopyTo(fileStream);
+                    }
+
+                    person.PhotoPath = fileName + extension;
+
+                }
+                else
+                {
+                    obj.PhotoPath = person.PhotoPath;
+                }
+
+
                 try
                 {
                     _personRepo.Update(person, UpdateMode.Update);

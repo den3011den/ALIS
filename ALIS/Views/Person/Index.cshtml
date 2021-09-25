@@ -1,4 +1,5 @@
-﻿
+﻿@using ALIS_Utility
+
 <br />
 <div class="border p-3 bg-white">
     <div class="d-flex justify-content-between mb-3">
@@ -12,7 +13,7 @@
             <div class="text-right pr-0">
                 @*<a asp-controller="Person" asp-action="PrintBarCodeSelected" id="print_bar_code_selected" class="btn btn-outline-info text-right">*@
                 <a id="print_bar_code_selected" class="btn btn-outline-info text-right">
-                <i class="fas fa-print"></i> &nbsp; Печатать карточки выбраных персон
+                    <i class="fas fa-print"></i> &nbsp; Печатать карточки выбраных персон
                 </a>
             </div>
             <div class="text-right pr-4">
@@ -40,7 +41,8 @@
             </tr>
         </thead>
     </table>
-
+    @*@WC.PhotoPath;*@
+    @*@WC.NoPhotoPath*@
 </div>
 
 @section Scripts{
@@ -49,6 +51,8 @@
         window.model_name = 'Person';
         window.selected_items = new Set();
         window.print_selected_url = '/Person/PrintBarCodeSelected';
+        //window.alis_utility_wc_photopath = '\\images\\person\\';
+        //window.alis_utility_wc_nophotopath = '\\images\\person\\no_photo.jpg'
     </script>
     <script src="~/js/person.js"></script>
 

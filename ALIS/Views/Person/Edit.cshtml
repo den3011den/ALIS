@@ -1,7 +1,8 @@
 ﻿
 @model ALIS_Models.Person
+@using ALIS_Utility
 
-<form method="post" asp-action="Edit">
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
     <input asp-for="Id" hidden />
     <input asp-for="Barcode" hidden />
     <input asp-for="UserId" hidden />
@@ -45,6 +46,15 @@
                     <div class="col-8">
                         <input asp-for="Patronymic" class="form-control" />
                         <span asp-validation-for="Patronymic" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row py-2">
+                    <div class="col-4">
+                        Фото:
+                    </div>
+                    <div class="col-8">
+                        <input type="file" name="files" id="uploadBox" onchange="readURL(this)" multiple class="form-control" />
                     </div>
                 </div>
 
@@ -177,6 +187,14 @@
             </div>
             <div class="col-4">
                 @* Keep this empty *@
+                @if (String.IsNullOrEmpty(Model.PhotoPath))
+                {
+                    <img id="imgBox" src="@WC.NoPhotoPath" width="100%" style="border-radius:5px; border:1px; solid #bbb" />
+                }
+                else
+                {
+                    <img id="imgBox" src="@WC.PhotoPath@Model.PhotoPath" width="100%" style="border-radius:5px; border:1px; solid #bbb" />
+                }
             </div>
         </div>
     </div>
@@ -186,6 +204,22 @@
     @{
         <partial name="_ValidationScriptsPartial" />
     }
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgBox')
+                        .attr('src', e.target.result);
+
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }
 
 

@@ -7,8 +7,8 @@ var dataTable;
 var api_url = window.api_url || null;
 var model_name = window.model_name || null;
 var print_selected_url = window.print_selected_url || null;
-
-
+//var alis_utility_wc_photopath = window.alis_utility_wc_photopath || null;
+//var alis_utility_wc_nophotopath = window.alis_utility_wc_nophotopath || null;
     
 $(document).ready(function () {
     loadDataTable("");
@@ -62,6 +62,20 @@ function loadDataTable(url) {
                 "width": "3%"
             },
             { "data": "id", "width": "3%" },
+            //{
+            //    "data": "id",
+            //    "render": function (data, type, row, meta) {
+            //        if ((row.photoPath === "") || (row.photoPath === null)) {
+            //            return `<img src="${alis_utility_wc_nophotopath}" width="50" height="50" style="border-radius:5px; border:1px; solid #bbb" />`;
+            //        }
+            //        else {
+            //            return `<img src="${alis_utility_wc_photopath}${row.photoPath}" width="50" height="50" style="border-radius:5px; border:1px; solid #bbb" />`;
+            //        }
+                         
+            //    },
+            //    "width": "5%"
+            //},
+
             {
                 "data": "name",
                 "render": function (data, type, row, meta) {

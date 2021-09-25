@@ -80,6 +80,10 @@ namespace ALIS_Models
         [Column("User_id", TypeName = "character varying")]
         public string UserId { get; set; }
 
+        [DisplayName("Фото")]
+        [Column("PhotoPath", TypeName = "character varying")]
+        public string PhotoPath { get; set; }
+
         [NotMapped]
         [DisplayName("Роль пользователя")]
         public string RoleName { get; set; }
